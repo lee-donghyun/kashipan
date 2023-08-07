@@ -1,23 +1,25 @@
-import {StyleProp, Text, TextStyle, View, ViewStyle} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {useOnce} from '../hooks/useOnce';
 import {User, useUser} from '../hooks/useUser';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Home} from './Home';
+import {Register} from './Register';
+import {DOMAIN} from '../services/constant';
 
-class Styles {
-  static logo: StyleProp<TextStyle> = {
+const styles = StyleSheet.create({
+  logo: {
     fontStyle: 'italic',
     fontSize: 50,
     fontWeight: 'bold',
     textAlign: 'center',
-  };
-  static container: StyleProp<ViewStyle> = {
+  },
+  container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-  };
-}
+  },
+});
 
 const prefetch = (): Promise<User> =>
   new Promise((res, rej) => {
@@ -36,13 +38,13 @@ export const Splash = ({navigation}: NativeStackScreenProps<any>) => {
         navigation.replace(Home.name);
       })
       .catch(() => {
-        navigation.replace(Home.name);
+        navigation.replace(Register.name);
       });
   });
 
   return (
-    <View style={Styles.container}>
-      <Text style={Styles.logo}>KASHIPAN</Text>
+    <View style={styles.container}>
+      <Text style={styles.logo}>{DOMAIN}</Text>
     </View>
   );
 };
