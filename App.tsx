@@ -1,23 +1,29 @@
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {SafeAreaView} from 'react-native';
+import {Splash} from './src/screens/Splash';
+import {Home} from './src/screens/Home';
+
+const Stack = createNativeStackNavigator();
+const flex1 = {flex: 1};
 
 export const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
   return (
-    <SafeAreaView>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <View>
-          <Text>안녕하세요</Text>
-        </View>
-      </ScrollView>
+    <SafeAreaView style={flex1}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName={Splash.name}>
+          <Stack.Screen
+            name={Splash.name}
+            component={Splash}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name={Home.name}
+            component={Home}
+            options={{headerShown: false}}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
     </SafeAreaView>
   );
 };
