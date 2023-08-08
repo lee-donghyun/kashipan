@@ -11,6 +11,7 @@ import {Comment} from '../components/Comment';
 import {IconOutline} from '@ant-design/icons-react-native';
 import {useNavigation} from '@react-navigation/native';
 import useSWR from 'swr';
+import {mainScreenMutable} from '../services/mutables';
 
 const styles = StyleSheet.create({
   background: {
@@ -63,6 +64,7 @@ export const Comments = () => {
         <Pressable
           onPress={() => {
             navigation.goBack();
+            mainScreenMutable.removeDepth();
           }}>
           <IconOutline name="left" size={20} />
         </Pressable>
