@@ -3,7 +3,7 @@ import {Post} from '../components/Post';
 import {DOMAIN} from '../services/constant';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Comments} from './Comments';
-import {mainScreen} from '../services/mutables';
+import {mainScreenMutable} from '../services/mutables';
 import useSWR from 'swr';
 
 const styles = StyleSheet.create({
@@ -36,7 +36,7 @@ export const Thread = ({navigation}: NativeStackScreenProps<any>) => {
             onRefresh={() => mutate()}
           />
         }
-        ref={ref => (mainScreen.threadRef = ref)}>
+        ref={ref => mainScreenMutable.setThreadRef(ref)}>
         {Array(10)
           .fill(0)
           .map((_, key) => (
@@ -44,7 +44,7 @@ export const Thread = ({navigation}: NativeStackScreenProps<any>) => {
               key={key}
               onPressComments={() => {
                 navigation.push(Comments.name);
-                mainScreen.depth = 1;
+                mainScreenMutable.addDepth();
               }}
             />
           ))}
