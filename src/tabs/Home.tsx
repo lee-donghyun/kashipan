@@ -1,37 +1,15 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {DOMAIN} from '../services/constant';
-import {Post} from '../components/Post';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Thread} from '../stacks/Thread';
+import {Comments} from '../stacks/Comments';
 
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  header: {
-    padding: 16,
-    backgroundColor: '#FFFFFF',
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    fontStyle: 'italic',
-  },
-});
+const Stack = createNativeStackNavigator();
 
 export const Home = () => {
   return (
-    <View style={styles.background}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>{DOMAIN}</Text>
-      </View>
-      <ScrollView>
-        {Array(10)
-          .fill(0)
-          .map((_, key) => (
-            <Post key={key} />
-          ))}
-      </ScrollView>
-    </View>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name={Thread.name} component={Thread} />
+      <Stack.Screen name={Comments.name} component={Comments} />
+    </Stack.Navigator>
   );
 };
 Home.name = 'Home';

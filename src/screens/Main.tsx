@@ -7,6 +7,7 @@ import {MyPage} from '../tabs/MyPage';
 import {Pressable, StyleSheet, View} from 'react-native';
 import {IconOutline, IconFill} from '@ant-design/icons-react-native';
 import {Colors} from '../services/constant';
+import {mainScreen} from '../services/mutables';
 
 const Tab = createBottomTabNavigator();
 const styles = StyleSheet.create({
@@ -32,6 +33,15 @@ const TabBar = ({navigation, state: {index}}: BottomTabBarProps) => {
       <Pressable
         style={styles.tabBarItem}
         onPress={() => {
+          if (index === 0) {
+            if (mainScreen.depth > 0) {
+              mainScreen.depth = 0;
+              navigation.goBack();
+              return;
+            }
+            mainScreen.threadRef?.scrollTo({y: 0, animated: true});
+            return;
+          }
           navigation.navigate(Home.name);
         }}>
         <IconOutline
