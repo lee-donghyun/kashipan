@@ -1,4 +1,7 @@
 {
   "name": "RnApp",
-  "displayName": "RnApp"
+  "displayName": "RnApp",
+  "packagerOpts": {
+    "config": "metro.config.js"
+  }
 }
