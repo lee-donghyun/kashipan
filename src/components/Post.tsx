@@ -6,9 +6,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
   },
-  placeholder: {
+  imageContainer: {
+    flexDirection: 'row',
+  },
+  image: {
     backgroundColor: Colors.GRAY,
-    width: '100%',
+    flexBasis: '50%',
     aspectRatio: 1,
     opacity: 0.2,
   },
@@ -24,10 +27,18 @@ const styles = StyleSheet.create({
   content: {
     opacity: 0.9,
   },
-  actionContainer: {
+  bottomContainer: {
     padding: 16,
     paddingBottom: 56,
     flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  author: {
+    opacity: 0.8,
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
     gap: 20,
   },
   action: {
@@ -44,19 +55,25 @@ export const Post = () => {
       <View style={styles.titleContainer}>
         <Text style={styles.title}>여기에 제목 들어갑니다</Text>
       </View>
-      <View style={styles.placeholder} />
       <View style={styles.contentContainer}>
         <Text style={styles.content}>여기에는 내용들어갑니다 빼이~ </Text>
       </View>
-      <View style={styles.actionContainer}>
-        <Pressable style={styles.action}>
-          <IconOutline size={20} name="heart" />
-          <Text>102</Text>
-        </Pressable>
-        <Pressable style={styles.action}>
-          <IconOutline size={20} name="message" />
-          <Text>56</Text>
-        </Pressable>
+      <View style={styles.imageContainer}>
+        <View style={styles.image} />
+        <View style={styles.image} />
+      </View>
+      <View style={styles.bottomContainer}>
+        <Text style={styles.author}>@작성자아이디</Text>
+        <View style={styles.actionContainer}>
+          <Pressable style={styles.action}>
+            <IconOutline size={20} name="heart" />
+            <Text>102</Text>
+          </Pressable>
+          <Pressable style={styles.action}>
+            <IconOutline size={20} name="message" />
+            <Text>56</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );
