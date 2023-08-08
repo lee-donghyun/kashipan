@@ -1,6 +1,7 @@
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {Colors} from '../services/constant';
-import {IconOutline} from '@ant-design/icons-react-native';
+import {IconFill, IconOutline} from '@ant-design/icons-react-native';
+import {useState} from 'react';
 
 const styles = StyleSheet.create({
   container: {
@@ -49,7 +50,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Post = () => {
+export const Post = ({onPressComments}: {onPressComments: () => void}) => {
+  const [liked, setLiked] = useState(false);
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -65,11 +67,19 @@ export const Post = () => {
       <View style={styles.bottomContainer}>
         <Text style={styles.author}>@작성자아이디</Text>
         <View style={styles.actionContainer}>
-          <Pressable style={styles.action}>
-            <IconOutline size={20} name="heart" />
-            <Text>102</Text>
+          <Pressable
+            style={styles.action}
+            onPress={() => {
+              setLiked(!liked);
+            }}>
+            {liked ? (
+              <IconFill size={20} name="heart" color="red" />
+            ) : (
+              <IconOutline size={20} name="heart" />
+            )}
+            <Text>{liked ? '102' : '101'}</Text>
           </Pressable>
-          <Pressable style={styles.action}>
+          <Pressable style={styles.action} onPress={onPressComments}>
             <IconOutline size={20} name="message" />
             <Text>56</Text>
           </Pressable>
