@@ -6,24 +6,23 @@ import {Home} from '../tabs/Home';
 import {MyPage} from '../tabs/MyPage';
 import {Pressable, StyleSheet, View} from 'react-native';
 import {IconOutline, IconFill} from '@ant-design/icons-react-native';
+import {Colors} from '../services/constant';
 
 const Tab = createBottomTabNavigator();
 const styles = StyleSheet.create({
   tabBarContainter: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.WHITE,
     justifyContent: 'space-around',
     flexDirection: 'row',
-    paddingStart: 8,
-    paddingEnd: 8,
   },
   tabBarItem: {
     flex: 1,
-    paddingTop: 6,
+    paddingTop: 10,
     paddingBottom: 6,
     alignItems: 'center',
   },
   notSelected: {
-    color: '#A1A1A1',
+    color: Colors.GRAY,
   },
 });
 
@@ -41,11 +40,11 @@ const TabBar = ({navigation, state: {index}}: BottomTabBarProps) => {
           style={index !== 0 && styles.notSelected}
         />
       </Pressable>
-      <Pressable style={styles.tabBarItem}>
+      <Pressable>
         <IconFill
           size={24}
           name="up-circle"
-          style={{transform: [{scale: 2}, {translateY: -2}]}}
+          style={{transform: [{scale: 2.4}, {translateY: -1}]}}
         />
       </Pressable>
       <Pressable

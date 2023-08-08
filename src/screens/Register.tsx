@@ -1,12 +1,12 @@
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {DOMAIN} from '../services/constant';
+import {Colors, DOMAIN} from '../services/constant';
 import {Main} from './Main';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.WHITE,
     padding: 40,
   },
   logo: {
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
   helper: {
     fontSize: 14,
-    color: '#999999',
+    color: Colors.GRAY,
     paddingTop: 30,
     flex: 1,
   },

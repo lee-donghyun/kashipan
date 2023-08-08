@@ -1,9 +1,10 @@
 import {ScrollView, StyleSheet, Text} from 'react-native';
+import {Colors} from '../services/constant';
 
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.WHITE,
     padding: 40,
   },
 });

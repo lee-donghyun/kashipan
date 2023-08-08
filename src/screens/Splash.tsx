@@ -4,7 +4,7 @@ import {User, useUser} from '../hooks/useUser';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Main} from './Main';
 import {Register} from './Register';
-import {DOMAIN} from '../services/constant';
+import {Colors, DOMAIN} from '../services/constant';
 
 const styles = StyleSheet.create({
   logo: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.WHITE,
   },
 });
 
