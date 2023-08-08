@@ -2,7 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {useOnce} from '../hooks/useOnce';
 import {User, useUser} from '../hooks/useUser';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Home} from './Home';
+import {Main} from './Main';
 import {Register} from './Register';
 import {DOMAIN} from '../services/constant';
 
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const prefetch = (): Promise<User> =>
+const prefetch = (): Promise<{user: User}> =>
   new Promise((res, rej) => {
     setTimeout(() => {
       rej();
@@ -33,9 +33,9 @@ export const Splash = ({navigation}: NativeStackScreenProps<any>) => {
 
   useOnce(() => {
     prefetch()
-      .then(user => {
+      .then(({user}) => {
         setUser(user);
-        navigation.replace(Home.name);
+        navigation.replace(Main.name);
       })
       .catch(() => {
         navigation.replace(Register.name);

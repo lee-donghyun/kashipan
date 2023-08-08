@@ -1,6 +1,6 @@
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {DOMAIN} from '../services/constant';
-import {Home} from './Home';
+import {Main} from './Main';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 const styles = StyleSheet.create({
@@ -42,7 +42,7 @@ export const Register = ({navigation}: NativeStackScreenProps<any>) => {
             styles.kakaoLogin,
           ]}
           onPress={() => {
-            navigation.replace(Home.name);
+            navigation.replace(Main.name);
           }}>
           <Text>카카오로 로그인</Text>
         </Pressable>
