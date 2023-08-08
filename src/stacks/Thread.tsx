@@ -1,9 +1,10 @@
-import {StyleSheet, View, Text, ScrollView} from 'react-native';
+import {StyleSheet, View, Text, ScrollView, RefreshControl} from 'react-native';
 import {Post} from '../components/Post';
 import {DOMAIN} from '../services/constant';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Comments} from './Comments';
 import {mainScreen} from '../services/mutables';
+import useSWR from 'swr';
 
 const styles = StyleSheet.create({
   background: {
@@ -22,12 +23,20 @@ const styles = StyleSheet.create({
 });
 
 export const Thread = ({navigation}: NativeStackScreenProps<any>) => {
+  const {mutate, isLoading, isValidating} = useSWR(['/thread', {}]);
   return (
     <View style={styles.background}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>{DOMAIN}</Text>
       </View>
-      <ScrollView ref={ref => (mainScreen.threadRef = ref)}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={!isLoading && isValidating}
+            onRefresh={() => mutate()}
+          />
+        }
+        ref={ref => (mainScreen.threadRef = ref)}>
         {Array(10)
           .fill(0)
           .map((_, key) => (

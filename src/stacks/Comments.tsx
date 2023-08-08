@@ -1,5 +1,6 @@
 import {
   Pressable,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,6 +10,7 @@ import {
 import {Comment} from '../components/Comment';
 import {IconOutline} from '@ant-design/icons-react-native';
 import {useNavigation} from '@react-navigation/native';
+import useSWR from 'swr';
 
 const styles = StyleSheet.create({
   background: {
@@ -54,6 +56,7 @@ const styles = StyleSheet.create({
 
 export const Comments = () => {
   const navigation = useNavigation();
+  const {mutate, isLoading, isValidating} = useSWR(['/comments', {}]);
   return (
     <View style={styles.background}>
       <View style={styles.header}>
@@ -66,7 +69,13 @@ export const Comments = () => {
         <Text style={styles.headerTitle}>댓글</Text>
         <View style={styles.w20} />
       </View>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={!isLoading && isValidating}
+            onRefresh={() => mutate()}
+          />
+        }>
         <View style={styles.inputContainer}>
           <TextInput
             autoFocus

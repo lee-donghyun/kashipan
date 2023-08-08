@@ -4,22 +4,36 @@ import {SafeAreaView} from 'react-native';
 import {Splash} from './src/screens/Splash';
 import {Main} from './src/screens/Main';
 import {Register} from './src/screens/Register';
+import {SWRConfig} from 'swr';
 
 const Stack = createNativeStackNavigator();
 const appStyle = {flex: 1};
 
 export const App = () => {
   return (
-    <SafeAreaView style={appStyle}>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName={Splash.name}
-          screenOptions={{headerShown: false}}>
-          <Stack.Screen name={Splash.name} component={Splash} />
-          <Stack.Screen name={Register.name} component={Register} />
-          <Stack.Screen name={Main.name} component={Main} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaView>
+    <SWRConfig
+      value={{
+        fetcher: () =>
+          new Promise(res => {
+            setTimeout(() => {
+              res('');
+            }, 2000);
+          }),
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+      }}>
+      <SafeAreaView style={appStyle}>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName={Splash.name}
+            screenOptions={{headerShown: false}}>
+            <Stack.Screen name={Splash.name} component={Splash} />
+            <Stack.Screen name={Register.name} component={Register} />
+            <Stack.Screen name={Main.name} component={Main} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    </SWRConfig>
   );
 };
