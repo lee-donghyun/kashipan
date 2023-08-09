@@ -9,6 +9,7 @@ import {IconOutline, IconFill} from '@ant-design/icons-react-native';
 import {Colors} from '../services/constant';
 import {mainScreenMutable} from '../services/mutables';
 import {Upload} from './Upload';
+import {useUploadPost} from '../hooks/useUploadPost';
 
 const Tab = createBottomTabNavigator();
 const styles = StyleSheet.create({
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
 });
 
 const TabBar = ({navigation, state: {index}}: BottomTabBarProps) => {
+  const resetPost = useUploadPost(state => state.reset);
   return (
     <View style={styles.tabBarContainter}>
       <Pressable
@@ -54,6 +56,7 @@ const TabBar = ({navigation, state: {index}}: BottomTabBarProps) => {
       <Pressable
         onPress={() => {
           navigation.navigate(Upload.name);
+          resetPost();
         }}>
         <IconFill
           size={24}
@@ -76,9 +79,13 @@ const TabBar = ({navigation, state: {index}}: BottomTabBarProps) => {
   );
 };
 
+const TabBarComponent = (props: BottomTabBarProps) => <TabBar {...props} />;
+
 export const Main = () => {
   return (
-    <Tab.Navigator screenOptions={{headerShown: false}} tabBar={TabBar}>
+    <Tab.Navigator
+      screenOptions={{headerShown: false}}
+      tabBar={TabBarComponent}>
       <Tab.Screen name={Home.name} component={Home} />
       <Tab.Screen name={MyPage.name} component={MyPage} />
     </Tab.Navigator>

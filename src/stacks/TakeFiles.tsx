@@ -14,6 +14,7 @@ import {useRef, useState} from 'react';
 import {trigger as haptic} from 'react-native-haptic-feedback';
 import {IconFill, IconOutline} from '@ant-design/icons-react-native';
 import {TakePost} from './TakePost';
+import {useUploadPost} from '../hooks/useUploadPost';
 
 const styles = StyleSheet.create({
   background: {
@@ -91,15 +92,14 @@ export const TakeFiles = () => {
   const {back: device} = useCameraDevices('wide-angle-camera');
   const cameraRef = useRef<Camera>(null);
   const [isRecording, setIsRecording] = useState(false);
-  const [files, setFiles] = useState<{type: 'photo' | 'video'; path: string}[]>(
-    [],
-  );
+  const files = useUploadPost(state => state.post.files);
+  const addFile = useUploadPost(state => state.addFile);
 
   const takePicture = () => {
     vibrate();
     cameraRef.current
       ?.takePhoto()
-      .then(file => setFiles(p => [...p, {type: 'photo', path: file.path}]));
+      .then(file => addFile({type: 'photo', path: file.path}));
   };
 
   const takeVideo = () => {
@@ -108,7 +108,7 @@ export const TakeFiles = () => {
       onRecordingError: () => {},
       onRecordingFinished: file => {
         vibrate();
-        setFiles(p => [...p, {type: 'video', path: file.path}]);
+        addFile({type: 'video', path: file.path});
         setIsRecording(false);
       },
     });
