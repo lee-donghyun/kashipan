@@ -8,6 +8,7 @@ import {Pressable, StyleSheet, View} from 'react-native';
 import {IconOutline, IconFill} from '@ant-design/icons-react-native';
 import {Colors} from '../services/constant';
 import {mainScreenMutable} from '../services/mutables';
+import {Upload} from './Upload';
 
 const Tab = createBottomTabNavigator();
 const styles = StyleSheet.create({
@@ -50,7 +51,10 @@ const TabBar = ({navigation, state: {index}}: BottomTabBarProps) => {
           style={index !== 0 && styles.notSelected}
         />
       </Pressable>
-      <Pressable>
+      <Pressable
+        onPress={() => {
+          navigation.navigate(Upload.name);
+        }}>
         <IconFill
           size={24}
           name="up-circle"
