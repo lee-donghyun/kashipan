@@ -102,9 +102,11 @@ export const Upload = () => {
             takeVideo();
           }}
           onPressOut={() => {
-            isRecording && setIsRecording(false);
-            vibrate();
-            cameraRef.current?.stopRecording();
+            if (isRecording) {
+              setIsRecording(false);
+              vibrate();
+              cameraRef.current?.stopRecording();
+            }
           }}
         />
       </View>
