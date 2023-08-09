@@ -1,10 +1,18 @@
-import {Alert, Pressable, StyleSheet, View} from 'react-native';
+import {
+  Alert,
+  Pressable,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {Colors} from '../services/constant';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import {useOnce} from '../hooks/useOnce';
 import {useNavigation} from '@react-navigation/native';
 import {useRef, useState} from 'react';
 import {trigger as haptic} from 'react-native-haptic-feedback';
+import {IconOutline} from '@ant-design/icons-react-native';
 
 const styles = StyleSheet.create({
   background: {
@@ -14,10 +22,22 @@ const styles = StyleSheet.create({
   cameraContainer: {
     flex: 1,
     backgroundColor: Colors.WHITE,
-    paddingTop: 80,
   },
   camera: {
     aspectRatio: 1,
+  },
+  indicatorContainer: {
+    padding: 16,
+    paddingBottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 20,
+  },
+  indicator: {
+    flexDirection: 'row',
+    gap: 6,
+    alignItems: 'center',
+    opacity: 0.8,
   },
   actionsContainer: {
     flex: 1,
@@ -26,10 +46,17 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     borderRadius: 9999,
-    borderColor: 'black',
+    borderColor: Colors.BLACK,
     borderWidth: 8,
     width: 80,
     height: 80,
+  },
+  header: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 16,
+    paddingBottom: 80,
+    flexDirection: 'row',
   },
 });
 
@@ -57,17 +84,23 @@ export const Upload = () => {
   const {back: device} = useCameraDevices('wide-angle-camera');
   const cameraRef = useRef<Camera>(null);
   const [isRecording, setIsRecording] = useState(false);
+  const [files, setFiles] = useState<{type: 'photo' | 'video'; path: string}[]>(
+    [],
+  );
 
   const takePicture = () => {
     vibrate();
-    cameraRef.current?.takeSnapshot().then(file => console.log(file));
+    cameraRef.current
+      ?.takePhoto()
+      .then(file => setFiles(p => [...p, {type: 'photo', path: file.path}]));
   };
 
   const takeVideo = () => {
     vibrate();
     cameraRef.current?.startRecording({
       onRecordingError: () => {},
-      onRecordingFinished: console.log,
+      onRecordingFinished: file =>
+        setFiles(p => [...p, {type: 'video', path: file.path}]),
     });
   };
 
@@ -83,13 +116,33 @@ export const Upload = () => {
   }
   return (
     <View style={styles.cameraContainer}>
+      <StatusBar hidden />
+      <View style={styles.header}>
+        <Pressable
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <IconOutline name="left" size={20} />
+        </Pressable>
+      </View>
       <Camera
         ref={cameraRef}
         style={styles.camera}
         device={device}
         isActive={true}
         photo
+        video
       />
+      <View style={styles.indicatorContainer}>
+        <View style={styles.indicator}>
+          <IconOutline name="camera" />
+          <Text>{files.filter(file => file.type === 'photo').length}</Text>
+        </View>
+        <View style={styles.indicator}>
+          <IconOutline name="video-camera" />
+          <Text>{files.filter(file => file.type === 'video').length}</Text>
+        </View>
+      </View>
       <View style={styles.actionsContainer}>
         <Pressable
           style={({pressed}) => [
