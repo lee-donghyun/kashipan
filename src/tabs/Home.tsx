@@ -22,4 +22,3 @@ export const Home = () => {
     </Stack.Navigator>
   );
 };
-Home.name = 'Home';

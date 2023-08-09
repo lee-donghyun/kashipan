@@ -50,4 +50,3 @@ export const Register = ({navigation}: NativeStackScreenProps<any>) => {
     </View>
   );
 };
-Register.name = 'Register';

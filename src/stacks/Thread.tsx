@@ -52,4 +52,3 @@ export const Thread = ({navigation}: NativeStackScreenProps<any>) => {
     </View>
   );
 };
-Thread.name = 'Thread';

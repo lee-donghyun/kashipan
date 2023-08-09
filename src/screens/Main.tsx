@@ -84,4 +84,3 @@ export const Main = () => {
     </Tab.Navigator>
   );
 };
-Main.name = 'Main';

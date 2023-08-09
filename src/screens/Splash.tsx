@@ -48,4 +48,3 @@ export const Splash = ({navigation}: NativeStackScreenProps<any>) => {
     </View>
   );
 };
-Splash.name = 'Splash';

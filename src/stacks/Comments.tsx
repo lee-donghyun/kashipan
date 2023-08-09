@@ -99,4 +99,3 @@ export const Comments = () => {
     </View>
   );
 };
-Comments.name = 'Comments';
