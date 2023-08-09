@@ -12,7 +12,7 @@ import {useOnce} from '../hooks/useOnce';
 import {useNavigation} from '@react-navigation/native';
 import {useRef, useState} from 'react';
 import {trigger as haptic} from 'react-native-haptic-feedback';
-import {IconOutline} from '@ant-design/icons-react-native';
+import {IconFill, IconOutline} from '@ant-design/icons-react-native';
 
 const styles = StyleSheet.create({
   background: {
@@ -41,8 +41,10 @@ const styles = StyleSheet.create({
   },
   actionsContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
+    position: 'relative',
+    flexDirection: 'row',
   },
   actionButton: {
     borderRadius: 9999,
@@ -58,6 +60,7 @@ const styles = StyleSheet.create({
     paddingBottom: 80,
     flexDirection: 'row',
   },
+  balancer: {width: 60},
 });
 
 const assertCameraPermission = async () => {
@@ -144,6 +147,7 @@ export const Upload = () => {
         </View>
       </View>
       <View style={styles.actionsContainer}>
+        <View style={styles.balancer} />
         <Pressable
           style={({pressed}) => [
             styles.actionButton,
@@ -162,6 +166,9 @@ export const Upload = () => {
             }
           }}
         />
+        <Pressable style={({pressed}) => pressed && {opacity: 0.6}}>
+          <IconFill name="right-circle" size={60} />
+        </Pressable>
       </View>
     </View>
   );
