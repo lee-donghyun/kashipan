@@ -11,6 +11,7 @@ import {mainScreenMutable} from '../services/mutables';
 import {Upload} from './Upload';
 import {useUploadPost} from '../hooks/useUploadPost';
 import {SafeAreaView} from '../components/SafeAreaView';
+import {trigger as haptic} from 'react-native-haptic-feedback';
 
 const Tab = createBottomTabNavigator();
 const styles = StyleSheet.create({
@@ -57,6 +58,7 @@ const TabBar = ({navigation, state: {index}}: BottomTabBarProps) => {
       <Pressable
         onPress={() => {
           navigation.navigate(Upload.name);
+          haptic('impactMedium');
           resetPost();
         }}>
         <IconFill

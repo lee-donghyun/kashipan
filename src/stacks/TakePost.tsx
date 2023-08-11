@@ -16,6 +16,7 @@ import {Spacer} from '../components/Spacer';
 import Video from 'react-native-video';
 import {MemoedGrid} from '../components/Grid';
 import {Main} from '../screens/Main';
+import {trigger as haptic} from 'react-native-haptic-feedback';
 
 const styles = StyleSheet.create({
   background: {
@@ -110,6 +111,7 @@ export const TakePost = () => {
               pressed && {opacity: 0.6},
             ]}
             onPress={() => {
+              haptic('impactMedium');
               navigation.navigate(Main.name);
             }}>
             <IconOutline name="up" size={20} color={Colors.WHITE} />

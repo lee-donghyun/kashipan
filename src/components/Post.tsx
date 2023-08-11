@@ -2,6 +2,7 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {Colors} from '../services/constant';
 import {IconFill, IconOutline} from '@ant-design/icons-react-native';
 import {useState} from 'react';
+import {trigger as haptic} from 'react-native-haptic-feedback';
 
 const styles = StyleSheet.create({
   container: {
@@ -70,6 +71,7 @@ export const Post = ({onPressComments}: {onPressComments: () => void}) => {
           <Pressable
             style={styles.action}
             onPress={() => {
+              haptic('impactMedium');
               setLiked(!liked);
             }}>
             {liked ? (
