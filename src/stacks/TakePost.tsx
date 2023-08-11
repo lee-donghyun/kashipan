@@ -9,12 +9,13 @@ import {
 } from 'react-native';
 import {Post, useUploadPost} from '../hooks/useUploadPost';
 import {SafeAreaView} from '../components/SafeAreaView';
-import {IconFill, IconOutline} from '@ant-design/icons-react-native';
+import {IconOutline} from '@ant-design/icons-react-native';
 import {Colors} from '../services/constant';
 import {useNavigation} from '@react-navigation/native';
 import {Spacer} from '../components/Spacer';
 import Video from 'react-native-video';
 import {MemoedGrid} from '../components/Grid';
+import {Main} from '../screens/Main';
 
 const styles = StyleSheet.create({
   background: {
@@ -26,10 +27,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 16,
     flexDirection: 'row',
-  },
-  headerTitle: {
-    fontSize: 16,
-    fontWeight: '600',
   },
   contentContainer: {
     flex: 1,
@@ -55,6 +52,24 @@ const styles = StyleSheet.create({
     flexBasis: '50%',
     aspectRatio: 1,
   },
+  actionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 80,
+  },
+  actionButton: {
+    flexDirection: 'row',
+    gap: 4,
+    alignItems: 'center',
+    backgroundColor: Colors.BLACK,
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  actionButtonText: {
+    fontWeight: '600',
+    color: Colors.WHITE,
+  },
 });
 
 const renderFile = (file: Post['files'][number]) =>
@@ -78,7 +93,7 @@ export const TakePost = () => {
     setContent,
     setTitle,
   } = useUploadPost();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   return (
     <SafeAreaView>
       <View style={styles.background}>
@@ -89,8 +104,17 @@ export const TakePost = () => {
             }}>
             <IconOutline name="left" size={20} />
           </Pressable>
-          <Text style={styles.headerTitle}>게시글 업로드</Text>
-          <Spacer w={20} />
+          <Pressable
+            style={({pressed}) => [
+              styles.actionButton,
+              pressed && {opacity: 0.6},
+            ]}
+            onPress={() => {
+              navigation.navigate(Main.name);
+            }}>
+            <IconOutline name="up" size={20} color={Colors.WHITE} />
+            <Text style={styles.actionButtonText}>공유</Text>
+          </Pressable>
         </View>
         <ScrollView style={styles.contentContainer}>
           <Spacer h={20} />
@@ -119,12 +143,7 @@ export const TakePost = () => {
             renderItem={renderFile}
             getKey={getKeyFromFile}
           />
-          <Pressable
-            onPress={() => {
-              navigation.goBack();
-            }}>
-            <IconFill name="up-circle" size={20} />
-          </Pressable>
+          <Spacer h={160} />
         </ScrollView>
       </View>
     </SafeAreaView>
