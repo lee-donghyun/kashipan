@@ -1,11 +1,4 @@
-import {
-  Alert,
-  Pressable,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
 import {Colors} from '../services/constant';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import {useOnce} from '../hooks/useOnce';
@@ -15,6 +8,7 @@ import {trigger as haptic} from 'react-native-haptic-feedback';
 import {IconFill, IconOutline} from '@ant-design/icons-react-native';
 import {TakePost} from './TakePost';
 import {useUploadPost} from '../hooks/useUploadPost';
+import {SafeAreaView} from '../components/SafeAreaView';
 
 const styles = StyleSheet.create({
   background: {
@@ -125,67 +119,68 @@ export const TakeFiles = () => {
     return <View style={styles.background} />;
   }
   return (
-    <View style={styles.cameraContainer}>
-      <StatusBar hidden />
-      <View style={styles.header}>
-        <Pressable
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <IconOutline name="left" size={20} />
-        </Pressable>
-      </View>
-      <Camera
-        ref={cameraRef}
-        style={styles.camera}
-        device={device}
-        isActive={true}
-        photo
-        video
-      />
-      <View style={styles.indicatorContainer}>
-        <View style={styles.indicator}>
-          <IconOutline name="camera" />
-          <Text>{files.filter(file => file.type === 'photo').length}</Text>
+    <SafeAreaView>
+      <View style={styles.cameraContainer}>
+        <View style={styles.header}>
+          <Pressable
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <IconOutline name="left" size={20} />
+          </Pressable>
         </View>
-        <View style={styles.indicator}>
-          <IconOutline
-            style={isRecording && styles.recordingIcon}
-            name="video-camera"
-          />
-          <Text>
-            {isRecording
-              ? 'REC'
-              : files.filter(file => file.type === 'video').length}
-          </Text>
-        </View>
-      </View>
-      <View style={styles.actionsContainer}>
-        <View style={styles.balancer} />
-        <Pressable
-          style={({pressed}) => [
-            styles.actionButton,
-            pressed && {opacity: 0.7},
-          ]}
-          onPress={takePicture}
-          onLongPress={() => {
-            setIsRecording(true);
-            takeVideo();
-          }}
-          onPressOut={() => {
-            if (isRecording) {
-              cameraRef.current?.stopRecording();
-            }
-          }}
+        <Camera
+          ref={cameraRef}
+          style={styles.camera}
+          device={device}
+          isActive={true}
+          photo
+          video
         />
-        <Pressable
-          style={({pressed}) => pressed && {opacity: 0.6}}
-          onPress={() => {
-            navigation.navigate(TakePost.name);
-          }}>
-          <IconFill name="right-circle" size={60} />
-        </Pressable>
+        <View style={styles.indicatorContainer}>
+          <View style={styles.indicator}>
+            <IconOutline name="camera" />
+            <Text>{files.filter(file => file.type === 'photo').length}</Text>
+          </View>
+          <View style={styles.indicator}>
+            <IconOutline
+              style={isRecording && styles.recordingIcon}
+              name="video-camera"
+            />
+            <Text>
+              {isRecording
+                ? 'REC'
+                : files.filter(file => file.type === 'video').length}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.actionsContainer}>
+          <View style={styles.balancer} />
+          <Pressable
+            style={({pressed}) => [
+              styles.actionButton,
+              pressed && {opacity: 0.7},
+            ]}
+            onPress={takePicture}
+            onLongPress={() => {
+              setIsRecording(true);
+              takeVideo();
+            }}
+            onPressOut={() => {
+              if (isRecording) {
+                cameraRef.current?.stopRecording();
+              }
+            }}
+          />
+          <Pressable
+            style={({pressed}) => pressed && {opacity: 0.6}}
+            onPress={() => {
+              navigation.navigate(TakePost.name);
+            }}>
+            <IconFill name="right-circle" size={60} />
+          </Pressable>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };

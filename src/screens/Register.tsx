@@ -2,6 +2,7 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {Colors, DOMAIN} from '../services/constant';
 import {Main} from './Main';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {SafeAreaView} from '../components/SafeAreaView';
 
 const styles = StyleSheet.create({
   background: {
@@ -30,23 +31,25 @@ const styles = StyleSheet.create({
 
 export const Register = ({navigation}: NativeStackScreenProps<any>) => {
   return (
-    <View style={styles.background}>
-      <Text style={styles.logo}>{DOMAIN}</Text>
-      <Text style={styles.helper}>로그인하여 {DOMAIN}을 사용하세요.</Text>
-      <View>
-        <Pressable
-          style={({pressed}) => [
-            pressed && {
-              opacity: 0.8,
-            },
-            styles.kakaoLogin,
-          ]}
-          onPress={() => {
-            navigation.replace(Main.name);
-          }}>
-          <Text>카카오로 로그인</Text>
-        </Pressable>
+    <SafeAreaView>
+      <View style={styles.background}>
+        <Text style={styles.logo}>{DOMAIN}</Text>
+        <Text style={styles.helper}>로그인하여 {DOMAIN}을 사용하세요.</Text>
+        <View>
+          <Pressable
+            style={({pressed}) => [
+              pressed && {
+                opacity: 0.8,
+              },
+              styles.kakaoLogin,
+            ]}
+            onPress={() => {
+              navigation.replace(Main.name);
+            }}>
+            <Text>카카오로 로그인</Text>
+          </Pressable>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
