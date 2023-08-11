@@ -30,13 +30,13 @@ export const Thread = ({navigation}: NativeStackScreenProps<any>) => {
         <Text style={styles.headerTitle}>{DOMAIN}</Text>
       </View>
       <ScrollView
+        ref={ref => mainScreenMutable.setThreadRef(ref)}
         refreshControl={
           <RefreshControl
-            refreshing={!isLoading && isValidating}
             onRefresh={() => mutate()}
+            refreshing={!isLoading && isValidating}
           />
-        }
-        ref={ref => mainScreenMutable.setThreadRef(ref)}>
+        }>
         {Array(10)
           .fill(0)
           .map((_, key) => (

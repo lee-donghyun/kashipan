@@ -139,11 +139,11 @@ export const TakeFiles = () => {
         </View>
         <Camera
           ref={cameraRef}
-          style={styles.camera}
-          device={device}
-          isActive={isFoucused}
           photo
           video
+          device={device}
+          isActive={isFoucused}
+          style={styles.camera}
         />
         <View style={styles.indicatorContainer}>
           <View style={styles.indicator}>
@@ -152,8 +152,8 @@ export const TakeFiles = () => {
           </View>
           <View style={styles.indicator}>
             <IconOutline
-              style={isRecording && styles.recordingIcon}
               name="video-camera"
+              style={isRecording && styles.recordingIcon}
             />
             <Text>
               {isRecording
@@ -165,10 +165,6 @@ export const TakeFiles = () => {
         <View style={styles.actionsContainer}>
           <View style={styles.balancer} />
           <Pressable
-            style={({pressed}) => [
-              styles.actionButton,
-              pressed && {opacity: 0.7},
-            ]}
             onPress={takePicture}
             onLongPress={() => {
               setIsRecording(true);
@@ -179,6 +175,10 @@ export const TakeFiles = () => {
                 cameraRef.current?.stopRecording();
               }
             }}
+            style={({pressed}) => [
+              styles.actionButton,
+              pressed && {opacity: 0.7},
+            ]}
           />
           <Pressable
             style={({pressed}) => pressed && {opacity: 0.6}}

@@ -50,8 +50,8 @@ const TabBar = ({navigation, state: {index}}: BottomTabBarProps) => {
           navigation.navigate(Home.name);
         }}>
         <IconOutline
-          size={24}
           name="home"
+          size={24}
           style={index !== 0 && styles.notSelected}
         />
       </Pressable>
@@ -62,8 +62,8 @@ const TabBar = ({navigation, state: {index}}: BottomTabBarProps) => {
           resetPost();
         }}>
         <IconFill
-          size={24}
           name="up-circle"
+          size={24}
           style={{transform: [{scale: 2.4}, {translateY: -1}]}}
         />
       </Pressable>
@@ -73,8 +73,8 @@ const TabBar = ({navigation, state: {index}}: BottomTabBarProps) => {
           navigation.navigate(MyPage.name);
         }}>
         <IconOutline
-          size={24}
           name="user"
+          size={24}
           style={index !== 1 && styles.notSelected}
         />
       </Pressable>
@@ -90,8 +90,8 @@ export const Main = () => {
       <Tab.Navigator
         screenOptions={{headerShown: false}}
         tabBar={TabBarComponent}>
-        <Tab.Screen name={Home.name} component={Home} />
-        <Tab.Screen name={MyPage.name} component={MyPage} />
+        <Tab.Screen component={Home} name={Home.name} />
+        <Tab.Screen component={MyPage} name={MyPage.name} />
       </Tab.Navigator>
     </SafeAreaView>
   );

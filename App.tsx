@@ -26,10 +26,10 @@ export const App = () => {
         <Stack.Navigator
           initialRouteName={Splash.name}
           screenOptions={{headerShown: false}}>
-          <Stack.Screen name={Splash.name} component={Splash} />
-          <Stack.Screen name={Register.name} component={Register} />
-          <Stack.Screen name={Main.name} component={Main} />
-          <Stack.Screen name={Upload.name} component={Upload} />
+          <Stack.Screen component={Splash} name={Splash.name} />
+          <Stack.Screen component={Register} name={Register.name} />
+          <Stack.Screen component={Main} name={Main.name} />
+          <Stack.Screen component={Upload} name={Upload.name} />
         </Stack.Navigator>
       </NavigationContainer>
     </SWRConfig>

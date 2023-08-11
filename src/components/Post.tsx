@@ -75,14 +75,14 @@ export const Post = ({onPressComments}: {onPressComments: () => void}) => {
               setLiked(!liked);
             }}>
             {liked ? (
-              <IconFill size={20} name="heart" color="red" />
+              <IconFill color="red" name="heart" size={20} />
             ) : (
-              <IconOutline size={20} name="heart" />
+              <IconOutline name="heart" size={20} />
             )}
             <Text>{liked ? '102' : '101'}</Text>
           </Pressable>
-          <Pressable style={styles.action} onPress={onPressComments}>
-            <IconOutline size={20} name="message" />
+          <Pressable onPress={onPressComments} style={styles.action}>
+            <IconOutline name="message" size={20} />
             <Text>56</Text>
           </Pressable>
         </View>

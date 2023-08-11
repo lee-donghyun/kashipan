@@ -12,7 +12,7 @@ export const SafeAreaView = ({
 }) => {
   return (
     <RNSafeAreaView style={appStyle}>
-      <StatusBar hidden={hideStatusBar} barStyle="dark-content" />
+      <StatusBar barStyle="dark-content" hidden={hideStatusBar} />
       {children}
     </RNSafeAreaView>
   );

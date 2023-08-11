@@ -6,8 +6,8 @@ const Stack = createNativeStackNavigator();
 export const Upload = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name={TakeFiles.name} component={TakeFiles} />
-      <Stack.Screen name={TakePost.name} component={TakePost} />
+      <Stack.Screen component={TakeFiles} name={TakeFiles.name} />
+      <Stack.Screen component={TakePost} name={TakePost.name} />
     </Stack.Navigator>
   );
 };

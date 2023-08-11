@@ -37,15 +37,15 @@ export const Register = ({navigation}: NativeStackScreenProps<any>) => {
         <Text style={styles.helper}>로그인하여 {DOMAIN}을 사용하세요.</Text>
         <View>
           <Pressable
+            onPress={() => {
+              navigation.replace(Main.name);
+            }}
             style={({pressed}) => [
               pressed && {
                 opacity: 0.8,
               },
               styles.kakaoLogin,
-            ]}
-            onPress={() => {
-              navigation.replace(Main.name);
-            }}>
+            ]}>
             <Text>카카오로 로그인</Text>
           </Pressable>
         </View>

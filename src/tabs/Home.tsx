@@ -17,8 +17,8 @@ export const Home = () => {
           }
         },
       }}>
-      <Stack.Screen name={Thread.name} component={Thread} />
-      <Stack.Screen name={Comments.name} component={Comments} />
+      <Stack.Screen component={Thread} name={Thread.name} />
+      <Stack.Screen component={Comments} name={Comments.name} />
     </Stack.Navigator>
   );
 };

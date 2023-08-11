@@ -75,8 +75,8 @@ export const Comments = () => {
       <ScrollView
         refreshControl={
           <RefreshControl
-            refreshing={!isLoading && isValidating}
             onRefresh={() => mutate()}
+            refreshing={!isLoading && isValidating}
           />
         }>
         <View style={styles.inputContainer}>

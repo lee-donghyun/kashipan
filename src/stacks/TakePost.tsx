@@ -78,11 +78,11 @@ const renderFile = (file: Post['files'][number]) =>
     <Image key={file.path} source={{uri: file.path}} style={styles.image} />
   ) : file.type === 'video' ? (
     <Video
-      source={{uri: file.path}}
       key={file.path}
-      resizeMode="cover"
-      style={styles.image}
       repeat
+      resizeMode="cover"
+      source={{uri: file.path}}
+      style={styles.image}
     />
   ) : null;
 
@@ -106,15 +106,15 @@ export const TakePost = () => {
             <IconOutline name="left" size={20} />
           </Pressable>
           <Pressable
-            style={({pressed}) => [
-              styles.actionButton,
-              pressed && {opacity: 0.6},
-            ]}
             onPress={() => {
               haptic('impactMedium');
               navigation.navigate(Main.name);
-            }}>
-            <IconOutline name="up" size={20} color={Colors.WHITE} />
+            }}
+            style={({pressed}) => [
+              styles.actionButton,
+              pressed && {opacity: 0.6},
+            ]}>
+            <IconOutline color={Colors.WHITE} name="up" size={20} />
             <Text style={styles.actionButtonText}>공유</Text>
           </Pressable>
         </View>
@@ -123,9 +123,9 @@ export const TakePost = () => {
           <Text style={styles.label}>제목</Text>
           <View style={styles.inputContainer}>
             <TextInput
-              value={title}
-              style={styles.titleInput}
               onChangeText={setTitle}
+              style={styles.titleInput}
+              value={title}
             />
           </View>
           <Spacer h={40} />
@@ -133,17 +133,17 @@ export const TakePost = () => {
           <View style={styles.inputContainer}>
             <TextInput
               multiline
+              onChangeText={setContent}
               style={styles.contentInput}
               value={content}
-              onChangeText={setContent}
             />
           </View>
           <Spacer h={80} />
           <MemoedGrid
             data={files}
+            getKey={getKeyFromFile}
             numColumns={2}
             renderItem={renderFile}
-            getKey={getKeyFromFile}
           />
           <Spacer h={160} />
         </ScrollView>
