@@ -1,7 +1,7 @@
 import {
+  FlatList,
   Pressable,
   RefreshControl,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -10,7 +10,7 @@ import {
 import {Comment} from '../components/Comment';
 import {IconOutline} from '@ant-design/icons-react-native';
 import {useNavigation} from '@react-navigation/native';
-import useSWR from 'swr';
+import useSWRInfinite from 'swr/infinite';
 import {mainScreenMutable} from '../services/mutables';
 import {Spacer} from '../components/Spacer';
 
@@ -58,7 +58,9 @@ const styles = StyleSheet.create({
 
 export const Comments = () => {
   const navigation = useNavigation();
-  const {mutate, isLoading, isValidating} = useSWR(['/comments', {}]);
+  const {mutate, isLoading, isValidating, setSize, size} = useSWRInfinite(
+    size => ['/thread', {size}],
+  );
   return (
     <View style={styles.background}>
       <View style={styles.header}>
@@ -72,31 +74,28 @@ export const Comments = () => {
         <Text style={styles.headerTitle}>댓글</Text>
         <Spacer w={20} />
       </View>
-      <ScrollView
+      <View style={styles.inputContainer}>
+        <TextInput
+          autoFocus
+          multiline
+          placeholder="@유저이름으로 댓글 달기..."
+          style={styles.input}
+        />
+        <Pressable style={styles.submitButton}>
+          <Text style={styles.submitButtonText}>게시</Text>
+        </Pressable>
+      </View>
+      <FlatList
+        data={Array(10 * size).fill(0)}
+        onEndReached={() => setSize(size => size + 1)}
+        renderItem={Comment}
         refreshControl={
           <RefreshControl
             onRefresh={() => mutate()}
             refreshing={!isLoading && isValidating}
           />
-        }>
-        <View style={styles.inputContainer}>
-          <TextInput
-            autoFocus
-            multiline
-            placeholder="@유저이름으로 댓글 달기..."
-            style={styles.input}
-          />
-          <Pressable style={styles.submitButton}>
-            <Text style={styles.submitButtonText}>게시</Text>
-          </Pressable>
-        </View>
-        {Array(10)
-          .fill(0)
-          .map((_, key) => (
-            <Comment key={key} />
-          ))}
-        <View style={styles.padding} />
-      </ScrollView>
+        }
+      />
     </View>
   );
 };

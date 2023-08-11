@@ -1,13 +1,13 @@
-import {ScrollView} from 'react-native';
+import {FlatList} from 'react-native';
 
 class MainScreenMutable {
   private depth: number;
-  private threadRef: ScrollView | null;
+  private threadRef: FlatList | null;
   constructor() {
     this.depth = 0;
     this.threadRef = null;
   }
-  setThreadRef(ref: ScrollView | null) {
+  setThreadRef(ref: FlatList | null) {
     this.threadRef = ref;
   }
   addDepth() {
@@ -20,7 +20,7 @@ class MainScreenMutable {
     return this.depth;
   }
   scrollToTop() {
-    this.threadRef?.scrollTo({y: 0, animated: true});
+    this.threadRef?.scrollToIndex({index: 0, animated: true});
   }
 }
 export const mainScreenMutable = new MainScreenMutable();

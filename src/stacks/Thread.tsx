@@ -1,10 +1,10 @@
-import {StyleSheet, View, Text, ScrollView, RefreshControl} from 'react-native';
+import {StyleSheet, View, Text, RefreshControl, FlatList} from 'react-native';
 import {Post} from '../components/Post';
 import {DOMAIN} from '../services/constant';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Comments} from './Comments';
 import {mainScreenMutable} from '../services/mutables';
-import useSWR from 'swr';
+import useSWRInfinite from 'swr/infinite';
 
 const styles = StyleSheet.create({
   background: {
@@ -23,32 +23,34 @@ const styles = StyleSheet.create({
 });
 
 export const Thread = ({navigation}: NativeStackScreenProps<any>) => {
-  const {mutate, isLoading, isValidating} = useSWR(['/thread', {}]);
+  const {mutate, isLoading, isValidating, setSize, size} = useSWRInfinite(
+    size => ['/thread', {size}],
+  );
+
   return (
     <View style={styles.background}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>{DOMAIN}</Text>
       </View>
-      <ScrollView
+      <FlatList
         ref={ref => mainScreenMutable.setThreadRef(ref)}
+        data={Array(10 * size).fill(0)}
+        onEndReached={() => setSize(size => size + 1)}
         refreshControl={
           <RefreshControl
             onRefresh={() => mutate()}
             refreshing={!isLoading && isValidating}
           />
-        }>
-        {Array(10)
-          .fill(0)
-          .map((_, key) => (
-            <Post
-              key={key}
-              onPressComments={() => {
-                navigation.push(Comments.name);
-                mainScreenMutable.addDepth();
-              }}
-            />
-          ))}
-      </ScrollView>
+        }
+        renderItem={() => (
+          <Post
+            onPressComments={() => {
+              navigation.push(Comments.name);
+              mainScreenMutable.addDepth();
+            }}
+          />
+        )}
+      />
     </View>
   );
 };
