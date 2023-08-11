@@ -7,12 +7,14 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import {useUploadPost} from '../hooks/useUploadPost';
+import {Post, useUploadPost} from '../hooks/useUploadPost';
 import {SafeAreaView} from '../components/SafeAreaView';
 import {IconFill, IconOutline} from '@ant-design/icons-react-native';
 import {Colors} from '../services/constant';
 import {useNavigation} from '@react-navigation/native';
 import {Spacer} from '../components/Spacer';
+import Video from 'react-native-video';
+import {MemoedGrid} from '../components/Grid';
 
 const styles = StyleSheet.create({
   background: {
@@ -54,6 +56,22 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
 });
+
+const renderFile = (file: Post['files'][number]) =>
+  file.type === 'photo' ? (
+    <Image key={file.path} source={{uri: file.path}} style={styles.image} />
+  ) : file.type === 'video' ? (
+    <Video
+      source={{uri: file.path}}
+      key={file.path}
+      resizeMode="cover"
+      style={styles.image}
+      repeat
+    />
+  ) : null;
+
+const getKeyFromFile = (file: Post['files'][number] | undefined) => file?.path;
+
 export const TakePost = () => {
   const {
     post: {title, content, files},
@@ -95,15 +113,12 @@ export const TakePost = () => {
             />
           </View>
           <Spacer h={80} />
-          <View style={styles.imageContainer}>
-            {files.map(file => (
-              <Image
-                key={file.path}
-                source={{uri: file.path}}
-                style={styles.image}
-              />
-            ))}
-          </View>
+          <MemoedGrid
+            data={files}
+            numColumns={2}
+            renderItem={renderFile}
+            getKey={getKeyFromFile}
+          />
           <Pressable
             onPress={() => {
               navigation.goBack();

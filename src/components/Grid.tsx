@@ -1,3 +1,4 @@
+import {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -49,3 +50,5 @@ export const Grid = <Key extends string, Props extends {[key in Key]: string}>({
     </View>
   );
 };
+
+export const MemoedGrid = memo(Grid) as typeof Grid;
