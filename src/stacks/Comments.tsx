@@ -12,6 +12,7 @@ import {IconOutline} from '@ant-design/icons-react-native';
 import {useNavigation} from '@react-navigation/native';
 import useSWR from 'swr';
 import {mainScreenMutable} from '../services/mutables';
+import {Spacer} from '../components/Spacer';
 
 const styles = StyleSheet.create({
   background: {
@@ -69,7 +70,7 @@ export const Comments = () => {
           <IconOutline name="left" size={20} />
         </Pressable>
         <Text style={styles.headerTitle}>댓글</Text>
-        <View style={styles.w20} />
+        <Spacer w={20} />
       </View>
       <ScrollView
         refreshControl={

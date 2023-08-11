@@ -2,13 +2,14 @@ import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
 import {Colors} from '../services/constant';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import {useOnce} from '../hooks/useOnce';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useRef, useState} from 'react';
 import {trigger as haptic} from 'react-native-haptic-feedback';
 import {IconFill, IconOutline} from '@ant-design/icons-react-native';
 import {TakePost} from './TakePost';
 import {useUploadPost} from '../hooks/useUploadPost';
 import {SafeAreaView} from '../components/SafeAreaView';
+import {Spacer} from '../components/Spacer';
 
 const styles = StyleSheet.create({
   background: {
@@ -56,6 +57,10 @@ const styles = StyleSheet.create({
     paddingBottom: 80,
     flexDirection: 'row',
   },
+  headerTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
   recordingIcon: {
     color: 'red',
   },
@@ -88,6 +93,7 @@ export const TakeFiles = () => {
   const [isRecording, setIsRecording] = useState(false);
   const files = useUploadPost(state => state.post.files);
   const addFile = useUploadPost(state => state.addFile);
+  const isFoucused = useIsFocused();
 
   const takePicture = () => {
     vibrate();
@@ -128,12 +134,14 @@ export const TakeFiles = () => {
             }}>
             <IconOutline name="left" size={20} />
           </Pressable>
+          <Text style={styles.headerTitle}>게시글 업로드</Text>
+          <Spacer w={20} />
         </View>
         <Camera
           ref={cameraRef}
           style={styles.camera}
           device={device}
-          isActive={true}
+          isActive={isFoucused}
           photo
           video
         />
