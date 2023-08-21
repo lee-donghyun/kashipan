@@ -1,10 +1,11 @@
-import {StyleSheet, View, Text, RefreshControl, FlatList} from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {FlatList, RefreshControl, StyleSheet, Text, View} from 'react-native';
+import useSWRInfinite from 'swr/infinite';
+
 import {Post} from '../components/Post';
 import {DOMAIN} from '../services/constant';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Comments} from './Comments';
 import {mainScreenMutable} from '../services/mutables';
-import useSWRInfinite from 'swr/infinite';
+import {Comments} from './Comments';
 
 const styles = StyleSheet.create({
   background: {

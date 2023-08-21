@@ -1,22 +1,23 @@
-import {
-  View,
-  Text,
-  Pressable,
-  StyleSheet,
-  TextInput,
-  ScrollView,
-  Image,
-} from 'react-native';
-import {Post, useUploadPost} from '../hooks/useUploadPost';
-import {SafeAreaView} from '../components/SafeAreaView';
 import {IconOutline} from '@ant-design/icons-react-native';
-import {Colors} from '../services/constant';
 import {useNavigation} from '@react-navigation/native';
-import {Spacer} from '../components/Spacer';
-import Video from 'react-native-video';
-import {MemoedGrid} from '../components/Grid';
-import {Main} from '../screens/Main';
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import {trigger as haptic} from 'react-native-haptic-feedback';
+import Video from 'react-native-video';
+
+import {MemoedGrid} from '../components/Grid';
+import {SafeAreaView} from '../components/SafeAreaView';
+import {Spacer} from '../components/Spacer';
+import {Post, useUploadPost} from '../hooks/useUploadPost';
+import {Main} from '../screens/Main';
+import {Colors} from '../services/constant';
 
 const styles = StyleSheet.create({
   background: {

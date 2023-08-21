@@ -1,7 +1,8 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Thread} from '../stacks/Thread';
-import {Comments} from '../stacks/Comments';
+
 import {mainScreenMutable} from '../services/mutables';
+import {Comments} from '../stacks/Comments';
+import {Thread} from '../stacks/Thread';
 
 const Stack = createNativeStackNavigator();
 

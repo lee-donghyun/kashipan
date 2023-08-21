@@ -1,4 +1,5 @@
 import {SafeAreaView as RNSafeAreaView, StatusBar} from 'react-native';
+
 import {Colors} from '../services/constant';
 
 const appStyle = {flex: 1, backgroundColor: Colors.WHITE};

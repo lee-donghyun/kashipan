@@ -1,15 +1,16 @@
-import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
-import {Colors} from '../services/constant';
-import {Camera, useCameraDevices} from 'react-native-vision-camera';
-import {useOnce} from '../hooks/useOnce';
+import {IconFill, IconOutline} from '@ant-design/icons-react-native';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useRef, useState} from 'react';
+import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
 import {trigger as haptic} from 'react-native-haptic-feedback';
-import {IconFill, IconOutline} from '@ant-design/icons-react-native';
-import {TakePost} from './TakePost';
-import {useUploadPost} from '../hooks/useUploadPost';
+import {Camera, useCameraDevices} from 'react-native-vision-camera';
+
 import {SafeAreaView} from '../components/SafeAreaView';
 import {Spacer} from '../components/Spacer';
+import {useOnce} from '../hooks/useOnce';
+import {useUploadPost} from '../hooks/useUploadPost';
+import {Colors} from '../services/constant';
+import {TakePost} from './TakePost';
 
 const styles = StyleSheet.create({
   background: {

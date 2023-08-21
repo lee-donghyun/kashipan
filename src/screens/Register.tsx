@@ -1,8 +1,9 @@
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
+
+import {SafeAreaView} from '../components/SafeAreaView';
 import {Colors, DOMAIN} from '../services/constant';
 import {Main} from './Main';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {SafeAreaView} from '../components/SafeAreaView';
 
 const styles = StyleSheet.create({
   background: {

@@ -1,17 +1,18 @@
+import {IconFill, IconOutline} from '@ant-design/icons-react-native';
 import {
   BottomTabBarProps,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import {Home} from '../tabs/Home';
-import {MyPage} from '../tabs/MyPage';
 import {Pressable, StyleSheet, View} from 'react-native';
-import {IconOutline, IconFill} from '@ant-design/icons-react-native';
+import {trigger as haptic} from 'react-native-haptic-feedback';
+
+import {SafeAreaView} from '../components/SafeAreaView';
+import {useUploadPost} from '../hooks/useUploadPost';
 import {Colors} from '../services/constant';
 import {mainScreenMutable} from '../services/mutables';
+import {Home} from '../tabs/Home';
+import {MyPage} from '../tabs/MyPage';
 import {Upload} from './Upload';
-import {useUploadPost} from '../hooks/useUploadPost';
-import {SafeAreaView} from '../components/SafeAreaView';
-import {trigger as haptic} from 'react-native-haptic-feedback';
 
 const Tab = createBottomTabNavigator();
 const styles = StyleSheet.create({

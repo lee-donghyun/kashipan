@@ -1,9 +1,10 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Splash} from './src/screens/Splash';
+import {SWRConfig} from 'swr';
+
 import {Main} from './src/screens/Main';
 import {Register} from './src/screens/Register';
-import {SWRConfig} from 'swr';
+import {Splash} from './src/screens/Splash';
 import {Upload} from './src/screens/Upload';
 
 const Stack = createNativeStackNavigator();

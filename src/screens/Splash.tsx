@@ -1,10 +1,11 @@
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StyleSheet, Text, View} from 'react-native';
+
 import {useOnce} from '../hooks/useOnce';
 import {User, useUser} from '../hooks/useUser';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Colors, DOMAIN} from '../services/constant';
 import {Main} from './Main';
 import {Register} from './Register';
-import {Colors, DOMAIN} from '../services/constant';
 
 const styles = StyleSheet.create({
   logo: {

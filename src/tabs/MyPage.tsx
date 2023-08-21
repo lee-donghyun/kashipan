@@ -1,6 +1,7 @@
 import {IconFill, IconOutline} from '@ant-design/icons-react-native';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {trigger as haptic} from 'react-native-haptic-feedback';
+
 import {Spacer} from '../components/Spacer';
 
 const styles = StyleSheet.create({

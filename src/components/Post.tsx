@@ -1,8 +1,9 @@
-import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {Colors} from '../services/constant';
 import {IconFill, IconOutline} from '@ant-design/icons-react-native';
 import {useState} from 'react';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {trigger as haptic} from 'react-native-haptic-feedback';
+
+import {Colors} from '../services/constant';
 
 const styles = StyleSheet.create({
   container: {

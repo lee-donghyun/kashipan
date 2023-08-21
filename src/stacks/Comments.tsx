@@ -1,3 +1,5 @@
+import {IconOutline} from '@ant-design/icons-react-native';
+import {useNavigation} from '@react-navigation/native';
 import {
   FlatList,
   Pressable,
@@ -7,12 +9,11 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {Comment} from '../components/Comment';
-import {IconOutline} from '@ant-design/icons-react-native';
-import {useNavigation} from '@react-navigation/native';
 import useSWRInfinite from 'swr/infinite';
-import {mainScreenMutable} from '../services/mutables';
+
+import {Comment} from '../components/Comment';
 import {Spacer} from '../components/Spacer';
+import {mainScreenMutable} from '../services/mutables';
 
 const styles = StyleSheet.create({
   background: {
