@@ -9,15 +9,14 @@ React native로 만든 SNS 앱입니다.
 
 ## 시작하는 방법
 
-이 프로젝트는 yarn 을 사용합니다.
+이 프로젝트는 npm@9 을 사용합니다.
 
 ```sh
-yarn && yarn start
+npm i && npm start
 ```
 
 ## 의존성
 
-- yarn
 - react
 - react-native
 - react-native-haptic-feedback
