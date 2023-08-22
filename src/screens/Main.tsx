@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   tabBarItem: {
     flex: 1,
     paddingTop: 10,
-    paddingBottom: 6,
+    paddingBottom: 10,
     alignItems: 'center',
   },
   notSelected: {
