@@ -12,8 +12,12 @@ export const Home = () => {
       screenOptions={{headerShown: false}}
       screenListeners={{
         beforeRemove: e => {
-          // Thread 탭인지 확인 추가 필요
-          if ((e.data as {action: {type: string}})?.action.type === 'POP') {
+          const isCommentsScreen = e.target?.startsWith(Comments.name);
+          const actionType = (e.data as {action: {type: string}})?.action.type;
+          if (
+            isCommentsScreen &&
+            (actionType === 'POP' || actionType === 'GO_BACK')
+          ) {
             mainScreenMutable.removeDepth();
           }
         },

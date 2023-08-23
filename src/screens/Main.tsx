@@ -41,7 +41,6 @@ const TabBar = ({navigation, state: {index}}: BottomTabBarProps) => {
         onPress={() => {
           if (index === 0) {
             if (mainScreenMutable.getDepth() > 0) {
-              mainScreenMutable.removeDepth();
               navigation.goBack();
               return;
             }
