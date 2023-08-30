@@ -4,10 +4,10 @@ import axios from 'axios';
 import {parse, stringify} from 'qs';
 import {useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import useSWRMutation from 'swr/mutation';
 
 import {SafeAreaView} from '../components/SafeAreaView';
 import {useBrowser} from '../hooks/useBrowser';
+import {usePromise} from '../hooks/usePromise';
 import {api} from '../services/api';
 import {Colors, DOMAIN} from '../services/constant';
 import {authStorage} from '../services/storage';
@@ -44,9 +44,8 @@ export const Register = () => {
   const closeBrowser = useBrowser(store => store.close);
   const [error, setError] = useState('');
 
-  const {trigger, isMutating} = useSWRMutation(
-    'REGISTER',
-    async (key: string, {arg: {code}}: {arg: {code: string}}) => {
+  const {execute, isPending} = usePromise(
+    async (code: string) => {
       const token = await signUpWithKakaoCode(code);
       await authStorage.saveToken(token);
       navigation.replace(Splash.name);
@@ -80,7 +79,7 @@ export const Register = () => {
                     typeof code === 'string'
                   ) {
                     closeBrowser();
-                    trigger({code});
+                    execute(code);
                   }
                 },
               });
@@ -90,7 +89,7 @@ export const Register = () => {
                 opacity: 0.8,
               },
               styles.kakaoLogin,
-              isMutating && {
+              isPending && {
                 backgroundColor: Colors.GRAY,
               },
             ]}>
