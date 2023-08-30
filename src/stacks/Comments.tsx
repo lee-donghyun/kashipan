@@ -1,6 +1,6 @@
 import {IconOutline} from '@ant-design/icons-react-native';
 import {useNavigation} from '@react-navigation/native';
-import {useMemo} from 'react';
+import {useMemo, useState} from 'react';
 import {
   FlatList,
   Pressable,
@@ -10,10 +10,13 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import {trigger as haptic} from 'react-native-haptic-feedback';
 
 import {CommentItem} from '../components/Comment';
 import {Spacer} from '../components/Spacer';
+import {usePromise} from '../hooks/usePromise';
 import {useThread} from '../hooks/useThread';
+import {api} from '../services/api';
 
 const styles = StyleSheet.create({
   background: {
@@ -61,11 +64,26 @@ export const Comments = () => {
   const navigation = useNavigation<any>();
   const postId = navigation.getState().routes.at(-1)?.params?.postId;
 
-  const {data, refresh, isLoading, isValidating} = useThread();
+  const [content, setContent] = useState('');
+
+  const {data, refresh, isLoading, isValidating, mutate} = useThread();
   const comments = useMemo(
-    () => data?.flat().find(post => post.id === postId)?.comments,
+    () =>
+      data
+        ?.flat()
+        .find(post => post.id === postId)
+        ?.comments.slice()
+        .reverse(),
     [data, postId],
   );
+
+  const {execute, isPending} = usePromise(async () => {
+    api
+      .post('/comment', {comment: content, postId: postId})
+      .then(() => mutate())
+      .then(() => setContent(''));
+  });
+
   return (
     <View style={styles.background}>
       <View style={styles.header}>
@@ -82,10 +100,18 @@ export const Comments = () => {
         <TextInput
           autoFocus
           multiline
+          onChangeText={setContent}
           placeholder="@유저이름으로 댓글 달기..."
           style={styles.input}
+          value={content}
         />
-        <Pressable style={styles.submitButton}>
+        <Pressable
+          disabled={isPending}
+          style={styles.submitButton}
+          onPress={() => {
+            haptic('impactMedium');
+            execute();
+          }}>
           <Text style={styles.submitButtonText}>게시</Text>
         </Pressable>
       </View>
@@ -95,7 +121,7 @@ export const Comments = () => {
         refreshControl={
           <RefreshControl
             onRefresh={refresh}
-            refreshing={!isLoading && isValidating}
+            refreshing={!isPending && !isLoading && isValidating}
           />
         }
       />
