@@ -1,6 +1,8 @@
+import {IconOutline} from '@ant-design/icons-react-native';
 import {animated, useSpring} from '@react-spring/native';
 import {JSX} from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, Pressable, StyleSheet, View} from 'react-native';
+import WebView from 'react-native-webview';
 
 import {useBrowser} from '../hooks/useBrowser';
 import {Colors} from '../services/constant';
@@ -25,14 +27,21 @@ const styles = StyleSheet.create({
     right: 0,
     borderRadius: 30,
     overflow: 'hidden',
-    backgroundColor: Colors.GRAY,
+    backgroundColor: Colors.WHITE,
     height: Dimensions.get('window').height - 60,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    padding: 20,
   },
 });
 
 export const BrowserProvider = ({children}: {children: JSX.Element}) => {
-  const open = useBrowser(store => store.open);
+  const {open, setOpen} = useBrowser();
   const backdrop = useSpring({
+    opacity: open ? 0.9 : 1,
     scale: open ? 0.96 : 1,
     translateY: open ? 20 : 0,
   });
@@ -64,7 +73,12 @@ export const BrowserProvider = ({children}: {children: JSX.Element}) => {
             transform: [{translateY: modal.translateY}],
           },
         ]}>
-        <Text>여기에.. 웹뷰?</Text>
+        <View style={styles.modalHeader}>
+          <Pressable onPress={() => setOpen(false)}>
+            <IconOutline name="close" size={24} />
+          </Pressable>
+        </View>
+        <WebView source={{uri: 'https://www.naver.com'}} />
       </animated.View>
     </View>
   );
