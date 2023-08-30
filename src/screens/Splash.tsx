@@ -26,9 +26,11 @@ const styles = StyleSheet.create({
 
 const prefetch = async (): Promise<{user: User}> => {
   const loginToken = await authStorage.getToken();
-  const {data: user} = await api.get<User>('/user', {headers: {loginToken}});
+  const {data: user} = await api.get<Omit<User, 'loginToken'>>('/user', {
+    headers: {loginToken},
+  });
   api.defaults.headers.loginToken = loginToken;
-  return {user};
+  return {user: {...user, loginToken}};
 };
 
 export const Splash = ({navigation}: NativeStackScreenProps<any>) => {
