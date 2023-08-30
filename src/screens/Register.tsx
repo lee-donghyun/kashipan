@@ -52,7 +52,10 @@ export const Register = () => {
       navigation.replace(Splash.name);
     },
     {
-      onError: e => setError(JSON.stringify(e)),
+      onError: e => {
+        console.log(e);
+        setError(JSON.stringify(e));
+      },
     },
   );
 
@@ -124,7 +127,7 @@ const signUpWithKakaoCode = async (code: string) => {
 
   const email = `${id}@kauth.kakao.com`;
 
-  await api.post('/user/signUp', {email}).catch();
+  await api.post('/user/signUp', {email}).catch(() => {});
   const {
     data: {token},
   } = await api.post('/user/signIn', {email});
