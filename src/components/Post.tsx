@@ -5,7 +5,6 @@ import {trigger as haptic} from 'react-native-haptic-feedback';
 
 import {Post} from '../data-types/post';
 import {usePromise} from '../hooks/usePromise';
-import {useUser} from '../hooks/useUser';
 import {api} from '../services/api';
 import {likedStorage} from '../services/storage';
 import {Image} from './Image';
@@ -63,13 +62,11 @@ export const PostItem = ({
   post: Post;
 }) => {
   const initialLiked = useRef(likedStorage.isLiked(post.id));
-
-  const loginToken = useUser(store => store.user?.loginToken);
   const [liked, setLiked] = useState(initialLiked.current);
 
   const {execute} = usePromise(() =>
     api
-      .post(`/post/${post.id}/like`, null, {headers: {loginToken}})
+      .post(`/post/${post.id}/like`)
       .then(() => likedStorage.saveLiked(post.id)),
   );
 
