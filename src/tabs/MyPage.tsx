@@ -1,9 +1,7 @@
-import {IconFill, IconOutline} from '@ant-design/icons-react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {trigger as haptic} from 'react-native-haptic-feedback';
 
-import {Spacer} from '../components/Spacer';
 import {useUser} from '../hooks/useUser';
 import {Splash} from '../screens/Splash';
 import {authStorage} from '../services/storage';
@@ -46,26 +44,13 @@ const styles = StyleSheet.create({
 
 export const MyPage = () => {
   const navigation = useNavigation<any>();
-  const resetUser = useUser(store => store.resetUser);
-  const onPress = () => {
-    haptic('impactMedium');
-  };
+  const {resetUser, user} = useUser();
   return (
     <View style={styles.background}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>@my_user_id</Text>
+        <Text style={styles.headerTitle}>@{user?.email.split('@')[0]}</Text>
       </View>
       <ScrollView style={styles.container}>
-        <Text style={styles.label}>설정</Text>
-        <Pressable onPress={onPress} style={styles.toggle}>
-          <Text>댓글 푸시 알림</Text>
-          <IconFill name="check-circle" size={24} />
-        </Pressable>
-        <Pressable onPress={onPress} style={styles.toggle}>
-          <Text>좋아요 푸시 알림</Text>
-          <IconOutline name="close-circle" size={24} />
-        </Pressable>
-        <Spacer h={40} />
         <Text style={styles.label}>계정</Text>
         <Pressable
           style={styles.toggle}
