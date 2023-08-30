@@ -3,7 +3,7 @@ import {useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {trigger as haptic} from 'react-native-haptic-feedback';
 
-import {Comment} from './Comment';
+import {Post} from '../data-types/post';
 import {Image} from './Image';
 
 const styles = StyleSheet.create({
@@ -51,19 +51,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export type Post = {
-  id: number;
-  userId: number;
-  title: string;
-  content: string;
-  view: number;
-  createdAt: Date;
-  files: string[];
-  like: number;
-  comments: Comment[];
-};
-
-export const Post = ({
+export const PostItem = ({
   onPressComments,
   post,
 }: {

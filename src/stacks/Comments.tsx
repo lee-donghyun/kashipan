@@ -1,5 +1,6 @@
 import {IconOutline} from '@ant-design/icons-react-native';
 import {useNavigation} from '@react-navigation/native';
+import {useMemo} from 'react';
 import {
   FlatList,
   Pressable,
@@ -9,10 +10,10 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import useSWRInfinite from 'swr/infinite';
 
-import {Comment} from '../components/Comment';
+import {CommentItem} from '../components/Comment';
 import {Spacer} from '../components/Spacer';
+import {useThread} from '../hooks/useThread';
 
 const styles = StyleSheet.create({
   background: {
@@ -57,9 +58,13 @@ const styles = StyleSheet.create({
 });
 
 export const Comments = () => {
-  const navigation = useNavigation();
-  const {mutate, isLoading, isValidating, setSize, size} = useSWRInfinite(
-    size => ['/thread', {size}],
+  const navigation = useNavigation<any>();
+  const postId = navigation.getState().routes.at(-1)?.params?.postId;
+
+  const {data, refresh, isLoading, isValidating} = useThread();
+  const comments = useMemo(
+    () => data?.flat().find(post => post.id === postId)?.comments,
+    [data, postId],
   );
   return (
     <View style={styles.background}>
@@ -85,12 +90,11 @@ export const Comments = () => {
         </Pressable>
       </View>
       <FlatList
-        data={Array(10 * size).fill(0)}
-        onEndReached={() => setSize(size => size + 1)}
-        renderItem={Comment}
+        data={comments}
+        renderItem={CommentItem}
         refreshControl={
           <RefreshControl
-            onRefresh={() => mutate()}
+            onRefresh={refresh}
             refreshing={!isLoading && isValidating}
           />
         }
