@@ -1,11 +1,11 @@
 import {IconOutline} from '@ant-design/icons-react-native';
 import {animated, useSpring} from '@react-spring/native';
 import {JSX} from 'react';
-import {Dimensions, Pressable, StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import WebView from 'react-native-webview';
 
 import {useBrowser} from '../hooks/useBrowser';
-import {Colors} from '../services/constant';
+import {Colors, Dimensions} from '../services/constant';
 
 const styles = StyleSheet.create({
   background: {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     overflow: 'hidden',
     backgroundColor: Colors.WHITE,
-    height: Dimensions.get('window').height - 60,
+    height: Dimensions.HEIGHT - 60,
   },
   modalHeader: {
     flexDirection: 'row',
@@ -39,14 +39,16 @@ const styles = StyleSheet.create({
 });
 
 export const BrowserProvider = ({children}: {children: JSX.Element}) => {
-  const {open, setOpen} = useBrowser();
+  const {getIsOpen, close, props} = useBrowser();
+  const isOpen = getIsOpen();
+
   const backdrop = useSpring({
-    opacity: open ? 0.9 : 1,
-    scale: open ? 0.96 : 1,
-    translateY: open ? 20 : 0,
+    opacity: isOpen ? 0.9 : 1,
+    scale: isOpen ? 0.96 : 1,
+    translateY: isOpen ? 20 : 0,
   });
   const modal = useSpring({
-    translateY: open ? 0 : 890,
+    translateY: isOpen ? 0 : Dimensions.HEIGHT + 60,
   });
 
   return (
@@ -56,7 +58,7 @@ export const BrowserProvider = ({children}: {children: JSX.Element}) => {
           styles.backdrop,
           {
             ...backdrop,
-            ...(open && {borderRadius: 30, pointerEvents: 'none'}),
+            ...(isOpen && {borderRadius: 30, pointerEvents: 'none'}),
             transform: [
               {scale: backdrop.scale},
               {translateY: backdrop.translateY},
@@ -74,11 +76,11 @@ export const BrowserProvider = ({children}: {children: JSX.Element}) => {
           },
         ]}>
         <View style={styles.modalHeader}>
-          <Pressable onPress={() => setOpen(false)}>
+          <Pressable onPress={close}>
             <IconOutline name="close" size={24} />
           </Pressable>
         </View>
-        <WebView source={{uri: 'https://www.naver.com'}} />
+        {isOpen && <WebView {...props} />}
       </animated.View>
     </View>
   );
