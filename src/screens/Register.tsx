@@ -2,6 +2,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 
 import {SafeAreaView} from '../components/SafeAreaView';
+import {useBrowser} from '../hooks/useBrowser';
 import {Colors, DOMAIN} from '../services/constant';
 import {Main} from './Main';
 
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
 });
 
 export const Register = ({navigation}: NativeStackScreenProps<any>) => {
+  const setBrowserOpen = useBrowser(store => store.setOpen);
   return (
     <SafeAreaView>
       <View style={styles.background}>
@@ -39,7 +41,8 @@ export const Register = ({navigation}: NativeStackScreenProps<any>) => {
         <View>
           <Pressable
             onPress={() => {
-              navigation.replace(Main.name);
+              // navigation.replace(Main.name);
+              setBrowserOpen(true);
             }}
             style={({pressed}) => [
               pressed && {
