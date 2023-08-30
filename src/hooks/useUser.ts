@@ -7,7 +7,9 @@ export type User = {
 export const useUser = create<{
   user: User | null;
   setUser: (user: User) => void;
+  resetUser: () => void;
 }>(set => ({
   user: null,
   setUser: user => set({user}),
+  resetUser: () => set({user: null}),
 }));

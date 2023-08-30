@@ -13,6 +13,9 @@ class AuthStorage {
   async saveToken(token: string): Promise<void> {
     await AsyncStorage.setItem(AuthStorage.TOKEN_KEY, token);
   }
+  async removeToken(): Promise<void> {
+    await AsyncStorage.removeItem(AuthStorage.TOKEN_KEY);
+  }
 }
 
 export const authStorage = new AuthStorage();

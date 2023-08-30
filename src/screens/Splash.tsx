@@ -32,7 +32,7 @@ const prefetch = async (): Promise<{user: User}> => {
 };
 
 export const Splash = ({navigation}: NativeStackScreenProps<any>) => {
-  const setUser = useUser(store => store.setUser);
+  const {setUser, resetUser} = useUser();
 
   useOnce(() => {
     prefetch()
@@ -41,6 +41,8 @@ export const Splash = ({navigation}: NativeStackScreenProps<any>) => {
         navigation.replace(Main.name);
       })
       .catch(() => {
+        resetUser();
+        authStorage.removeToken();
         navigation.replace(Register.name);
       });
   });

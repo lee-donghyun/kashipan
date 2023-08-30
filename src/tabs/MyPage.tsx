@@ -1,8 +1,12 @@
 import {IconFill, IconOutline} from '@ant-design/icons-react-native';
+import {useNavigation} from '@react-navigation/native';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {trigger as haptic} from 'react-native-haptic-feedback';
 
 import {Spacer} from '../components/Spacer';
+import {useUser} from '../hooks/useUser';
+import {Splash} from '../screens/Splash';
+import {authStorage} from '../services/storage';
 
 const styles = StyleSheet.create({
   background: {
@@ -41,6 +45,8 @@ const styles = StyleSheet.create({
 });
 
 export const MyPage = () => {
+  const navigation = useNavigation<any>();
+  const resetUser = useUser(store => store.resetUser);
   const onPress = () => {
     haptic('impactMedium');
   };
@@ -61,7 +67,14 @@ export const MyPage = () => {
         </Pressable>
         <Spacer h={40} />
         <Text style={styles.label}>계정</Text>
-        <Pressable onPress={onPress} style={styles.toggle}>
+        <Pressable
+          style={styles.toggle}
+          onPress={() => {
+            haptic('impactMedium');
+            resetUser();
+            authStorage.removeToken();
+            navigation.replace(Splash.name);
+          }}>
           <Text style={styles.red}>로그아웃</Text>
         </Pressable>
       </ScrollView>
