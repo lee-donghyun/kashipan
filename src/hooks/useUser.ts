@@ -1,10 +1,15 @@
 import {create} from 'zustand';
 
-export type User = {};
+export type User = {
+  email: string;
+  profileImage: string;
+};
 export const useUser = create<{
-  user: User;
+  user: User | null;
   setUser: (user: User) => void;
+  resetUser: () => void;
 }>(set => ({
-  user: {} as User,
-  setUser: user => set(user),
+  user: null,
+  setUser: user => set({user}),
+  resetUser: () => set({user: null}),
 }));

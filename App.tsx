@@ -2,6 +2,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SWRConfig} from 'swr';
 
+import {BrowserProvider} from './src/components/Browser';
 import {Main} from './src/screens/Main';
 import {Register} from './src/screens/Register';
 import {Splash} from './src/screens/Splash';
@@ -23,16 +24,18 @@ export const App = () => {
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
       }}>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName={Splash.name}
-          screenOptions={{headerShown: false}}>
-          <Stack.Screen component={Splash} name={Splash.name} />
-          <Stack.Screen component={Register} name={Register.name} />
-          <Stack.Screen component={Main} name={Main.name} />
-          <Stack.Screen component={Upload} name={Upload.name} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <BrowserProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName={Splash.name}
+            screenOptions={{headerShown: false}}>
+            <Stack.Screen component={Splash} name={Splash.name} />
+            <Stack.Screen component={Register} name={Register.name} />
+            <Stack.Screen component={Main} name={Main.name} />
+            <Stack.Screen component={Upload} name={Upload.name} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </BrowserProvider>
     </SWRConfig>
   );
 };

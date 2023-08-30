@@ -3,7 +3,9 @@ import {StyleSheet, Text, View} from 'react-native';
 
 import {useOnce} from '../hooks/useOnce';
 import {User, useUser} from '../hooks/useUser';
+import {api} from '../services/api';
 import {Colors, DOMAIN} from '../services/constant';
+import {authStorage} from '../services/storage';
 import {Main} from './Main';
 import {Register} from './Register';
 
@@ -22,15 +24,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const prefetch = (): Promise<{user: User}> =>
-  new Promise((res, rej) => {
-    setTimeout(() => {
-      rej();
-    }, 2000);
-  });
+const prefetch = async (): Promise<{user: User}> => {
+  const loginToken = await authStorage.getToken();
+  const {data: user} = await api.get<User>('/user', {headers: {loginToken}});
+  api.defaults.headers.loginToken = loginToken;
+  return {user};
+};
 
 export const Splash = ({navigation}: NativeStackScreenProps<any>) => {
-  const setUser = useUser(store => store.setUser);
+  const {setUser, resetUser} = useUser();
 
   useOnce(() => {
     prefetch()
@@ -39,6 +41,8 @@ export const Splash = ({navigation}: NativeStackScreenProps<any>) => {
         navigation.replace(Main.name);
       })
       .catch(() => {
+        resetUser();
+        authStorage.removeToken();
         navigation.replace(Register.name);
       });
   });
