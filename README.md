@@ -11,9 +11,18 @@ React native로 만든 SNS 앱입니다.
 
 이 프로젝트는 npm@9 을 사용합니다.
 
+### ios
+
 ```sh
-npm i && npm start
+$ npm i
+$ npx pod-install
+$ npx react-native-asset # 이 과정에서 나오는  react-native-haptic-feedback/ios/RNHapticFeedback.xcassets 관련 에러메시지는 무시해도 됩니다.
+$ npm run start
 ```
+
+### android
+
+죄송합니다.
 
 ## 의존성
 
