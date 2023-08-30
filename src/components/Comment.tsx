@@ -1,5 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 
+import {Comment} from '../data-types/comment';
+
 const styles = StyleSheet.create({
   container: {
     padding: 16,
@@ -14,14 +16,12 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
 });
-export const Comment = () => {
+
+export const CommentItem = ({item}: {item: Comment}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.user}>@유저이름1</Text>
-      <Text style={styles.content}>
-        You can get reference the ScrollView component by setting ref property
-        and using this.refs as described here
-      </Text>
+      <Text style={styles.user}>@{item.userId}</Text>
+      <Text style={styles.content}>{item.comment}</Text>
     </View>
   );
 };

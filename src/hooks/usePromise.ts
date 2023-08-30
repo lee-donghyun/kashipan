@@ -11,6 +11,9 @@ export const usePromise = <T extends unknown[], R, E>(
   const [error, setError] = useState<E | null>(null);
 
   const execute = async (...args: T) => {
+    if (isPending) {
+      return;
+    }
     try {
       setIsPending(true);
       const data = await getPromise(...args);

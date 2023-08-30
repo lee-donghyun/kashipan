@@ -1,5 +1,6 @@
 import {IconOutline} from '@ant-design/icons-react-native';
 import {useNavigation} from '@react-navigation/native';
+import {useMemo, useState} from 'react';
 import {
   FlatList,
   Pressable,
@@ -9,10 +10,13 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import useSWRInfinite from 'swr/infinite';
+import {trigger as haptic} from 'react-native-haptic-feedback';
 
-import {Comment} from '../components/Comment';
+import {CommentItem} from '../components/Comment';
 import {Spacer} from '../components/Spacer';
+import {usePromise} from '../hooks/usePromise';
+import {useThread} from '../hooks/useThread';
+import {api} from '../services/api';
 
 const styles = StyleSheet.create({
   background: {
@@ -57,10 +61,29 @@ const styles = StyleSheet.create({
 });
 
 export const Comments = () => {
-  const navigation = useNavigation();
-  const {mutate, isLoading, isValidating, setSize, size} = useSWRInfinite(
-    size => ['/thread', {size}],
+  const navigation = useNavigation<any>();
+  const postId = navigation.getState().routes.at(-1)?.params?.postId;
+
+  const [content, setContent] = useState('');
+
+  const {data, refresh, isLoading, isValidating, mutate} = useThread();
+  const comments = useMemo(
+    () =>
+      data
+        ?.flat()
+        .find(post => post.id === postId)
+        ?.comments.slice()
+        .reverse(),
+    [data, postId],
   );
+
+  const {execute, isPending} = usePromise(async () => {
+    api
+      .post('/comment', {comment: content, postId: postId})
+      .then(() => mutate())
+      .then(() => setContent(''));
+  });
+
   return (
     <View style={styles.background}>
       <View style={styles.header}>
@@ -77,21 +100,28 @@ export const Comments = () => {
         <TextInput
           autoFocus
           multiline
+          onChangeText={setContent}
           placeholder="@유저이름으로 댓글 달기..."
           style={styles.input}
+          value={content}
         />
-        <Pressable style={styles.submitButton}>
+        <Pressable
+          disabled={isPending}
+          style={styles.submitButton}
+          onPress={() => {
+            haptic('impactMedium');
+            execute();
+          }}>
           <Text style={styles.submitButtonText}>게시</Text>
         </Pressable>
       </View>
       <FlatList
-        data={Array(10 * size).fill(0)}
-        onEndReached={() => setSize(size => size + 1)}
-        renderItem={Comment}
+        data={comments}
+        renderItem={CommentItem}
         refreshControl={
           <RefreshControl
-            onRefresh={() => mutate()}
-            refreshing={!isLoading && isValidating}
+            onRefresh={refresh}
+            refreshing={!isPending && !isLoading && isValidating}
           />
         }
       />

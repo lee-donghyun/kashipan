@@ -7,6 +7,7 @@ import {Main} from './src/screens/Main';
 import {Register} from './src/screens/Register';
 import {Splash} from './src/screens/Splash';
 import {Upload} from './src/screens/Upload';
+import {api} from './src/services/api';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,12 +15,8 @@ export const App = () => {
   return (
     <SWRConfig
       value={{
-        fetcher: () =>
-          new Promise(res => {
-            setTimeout(() => {
-              res('');
-            }, 2000);
-          }),
+        fetcher: ([path, params]: [string, object]) =>
+          api.get(path, {params}).then(res => res.data),
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
