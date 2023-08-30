@@ -1,4 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useCallback} from 'react';
 import {FlatList, RefreshControl, StyleSheet, Text, View} from 'react-native';
 import useSWRInfinite from 'swr/infinite';
 
@@ -22,10 +23,24 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
 });
+const PAGE_SIZE = 10;
 
 export const Thread = ({navigation}: NativeStackScreenProps<any>) => {
-  const {mutate, isLoading, isValidating, setSize, size} = useSWRInfinite(
-    size => ['/thread', {size}],
+  const {data, mutate, isLoading, isValidating, setSize} = useSWRInfinite<
+    Post[]
+  >(page => ['/post', {page, size: PAGE_SIZE}]);
+
+  const RenderItem = useCallback(
+    ({item}: {item: Post}) => (
+      <Post
+        post={item}
+        onPressComments={() => {
+          navigation.push(Comments.name);
+          mainScreenMutable.addDepth();
+        }}
+      />
+    ),
+    [navigation],
   );
 
   return (
@@ -35,22 +50,15 @@ export const Thread = ({navigation}: NativeStackScreenProps<any>) => {
       </View>
       <FlatList
         ref={ref => mainScreenMutable.setThreadRef(ref)}
-        data={Array(10 * size).fill(0)}
-        onEndReached={() => setSize(size => size + 1)}
+        data={data?.flat()}
+        onEndReached={() => setSize(_size => _size + 1)}
+        renderItem={RenderItem}
         refreshControl={
           <RefreshControl
             onRefresh={() => mutate()}
             refreshing={!isLoading && isValidating}
           />
         }
-        renderItem={() => (
-          <Post
-            onPressComments={() => {
-              navigation.push(Comments.name);
-              mainScreenMutable.addDepth();
-            }}
-          />
-        )}
       />
     </View>
   );

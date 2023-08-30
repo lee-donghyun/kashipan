@@ -14,6 +14,12 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
 });
+
+export type Comment = {
+  userId: string;
+  comment: string;
+  createdAt: Date;
+};
 export const Comment = () => {
   return (
     <View style={styles.container}>

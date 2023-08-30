@@ -3,7 +3,8 @@ import {useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {trigger as haptic} from 'react-native-haptic-feedback';
 
-import {Colors} from '../services/constant';
+import {Comment} from './Comment';
+import {Image} from './Image';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,10 +14,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   image: {
-    backgroundColor: Colors.GRAY,
     flexBasis: '50%',
     aspectRatio: 1,
-    opacity: 0.2,
   },
   titleContainer: {
     padding: 12,
@@ -52,22 +51,41 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Post = ({onPressComments}: {onPressComments: () => void}) => {
+export type Post = {
+  id: number;
+  userId: number;
+  title: string;
+  content: string;
+  view: number;
+  createdAt: Date;
+  files: string[];
+  like: number;
+  comments: Comment[];
+};
+
+export const Post = ({
+  onPressComments,
+  post,
+}: {
+  onPressComments: () => void;
+  post: Post;
+}) => {
   const [liked, setLiked] = useState(false);
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>여기에 제목 들어갑니다</Text>
+        <Text style={styles.title}>{post.title}</Text>
       </View>
       <View style={styles.contentContainer}>
-        <Text style={styles.content}>여기에는 내용들어갑니다 빼이~ </Text>
+        <Text style={styles.content}>{post.content}</Text>
       </View>
       <View style={styles.imageContainer}>
-        <View style={styles.image} />
-        <View style={styles.image} />
+        {post.files.map(file => (
+          <Image key={file} style={styles.image} uri={file} />
+        ))}
       </View>
       <View style={styles.bottomContainer}>
-        <Text style={styles.author}>@작성자아이디</Text>
+        <Text style={styles.author}>@{post.userId}</Text>
         <View style={styles.actionContainer}>
           <Pressable
             style={styles.action}
@@ -80,11 +98,11 @@ export const Post = ({onPressComments}: {onPressComments: () => void}) => {
             ) : (
               <IconOutline name="heart" size={20} />
             )}
-            <Text>{liked ? '102' : '101'}</Text>
+            <Text>{post.like}</Text>
           </Pressable>
           <Pressable onPress={onPressComments} style={styles.action}>
             <IconOutline name="message" size={20} />
-            <Text>56</Text>
+            <Text>{post.comments.length}</Text>
           </Pressable>
         </View>
       </View>
