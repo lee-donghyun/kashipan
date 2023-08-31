@@ -106,6 +106,8 @@ export const TakePost = () => {
     navigation.navigate(Main.name);
   });
 
+  const disabled = title.length === 0 || content.length === 0;
+
   return (
     <SafeAreaView>
       <View style={styles.background}>
@@ -117,12 +119,14 @@ export const TakePost = () => {
             <IconOutline name="left" size={20} />
           </Pressable>
           <Pressable
+            disabled={disabled}
             onPress={() => {
               haptic('impactMedium');
               execute();
             }}
             style={({pressed}) => [
               styles.actionButton,
+              disabled && {opacity: 0.2},
               pressed && {opacity: 0.6},
             ]}>
             <IconOutline color={Colors.WHITE} name="up" size={20} />
