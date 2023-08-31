@@ -15,8 +15,11 @@ import Video from 'react-native-video';
 import {MemoedGrid} from '../components/Grid';
 import {SafeAreaView} from '../components/SafeAreaView';
 import {Spacer} from '../components/Spacer';
+import {usePromise} from '../hooks/usePromise';
+import {useThread} from '../hooks/useThread';
 import {Post, useUploadPost} from '../hooks/useUploadPost';
 import {Main} from '../screens/Main';
+import {api} from '../services/api';
 import {Colors} from '../services/constant';
 
 const styles = StyleSheet.create({
@@ -90,12 +93,24 @@ const renderFile = (file: Post['files'][number]) =>
 const getKeyFromFile = (file: Post['files'][number] | undefined) => file?.path;
 
 export const TakePost = () => {
+  const navigation = useNavigation<any>();
+  const {refresh} = useThread();
+
   const {
     post: {title, content, files},
     setContent,
     setTitle,
   } = useUploadPost();
-  const navigation = useNavigation<any>();
+
+  const {execute, isPending} = usePromise(async () => {
+    const paths = await Promise.all(files.map(uploadFile));
+    await api.post('/post', {title, content, files: paths});
+    navigation.navigate(Main.name);
+    await refresh(false);
+  });
+
+  const disabled = title.length === 0 || content.length === 0 || isPending;
+
   return (
     <SafeAreaView>
       <View style={styles.background}>
@@ -107,12 +122,14 @@ export const TakePost = () => {
             <IconOutline name="left" size={20} />
           </Pressable>
           <Pressable
+            disabled={disabled}
             onPress={() => {
               haptic('impactMedium');
-              navigation.navigate(Main.name);
+              execute();
             }}
             style={({pressed}) => [
               styles.actionButton,
+              disabled && {opacity: 0.2},
               pressed && {opacity: 0.6},
             ]}>
             <IconOutline color={Colors.WHITE} name="up" size={20} />
@@ -151,4 +168,21 @@ export const TakePost = () => {
       </View>
     </SafeAreaView>
   );
+};
+
+const uploadFile = async (file: Post['files'][number]) => {
+  const extension = file.path.split('.').at(-1);
+  const form = new FormData();
+  form.append('file', {
+    uri: file.path,
+    name: `${Date.now()}.${extension}`,
+    type: {
+      photo: `image/${extension}`,
+      video: `video/${extension}`,
+    }[file.type],
+  });
+  const {data} = await api.post<{path: string}>('/file/upload', form, {
+    transformRequest: [formData => formData],
+  });
+  return data.path;
 };

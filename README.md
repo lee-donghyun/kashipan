@@ -15,8 +15,8 @@ React native로 만든 SNS 앱입니다.
 
 ```sh
 $ npm i
+$ npx react-native-asset
 $ npx pod-install
-$ npx react-native-asset # 이 과정에서 나오는  react-native-haptic-feedback/ios/RNHapticFeedback.xcassets 관련 에러메시지는 무시해도 됩니다.
 $ npm run start
 ```
 
@@ -31,6 +31,9 @@ $ npm run start
 - react-native-haptic-feedback
 - react-native-video
 - react-native-vision-camera
+- react-native-webview
+- react-native-asset
 - swr
 - zustand
 - typescript
+- qs

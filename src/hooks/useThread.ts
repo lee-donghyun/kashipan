@@ -14,10 +14,13 @@ export const useThread = () => {
     setSize(size => size + 1);
   }, [setSize]);
 
-  const refresh = useCallback(() => {
-    haptic('impactMedium');
-    return mutate();
-  }, [mutate]);
+  const refresh = useCallback(
+    (vibrate: boolean = true) => {
+      vibrate && haptic('impactMedium');
+      return mutate();
+    },
+    [mutate],
+  );
 
   return {data, mutate, isLoading, isValidating, loadMore, refresh};
 };
