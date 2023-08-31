@@ -16,6 +16,7 @@ import {MemoedGrid} from '../components/Grid';
 import {SafeAreaView} from '../components/SafeAreaView';
 import {Spacer} from '../components/Spacer';
 import {usePromise} from '../hooks/usePromise';
+import {useThread} from '../hooks/useThread';
 import {Post, useUploadPost} from '../hooks/useUploadPost';
 import {Main} from '../screens/Main';
 import {api} from '../services/api';
@@ -93,6 +94,7 @@ const getKeyFromFile = (file: Post['files'][number] | undefined) => file?.path;
 
 export const TakePost = () => {
   const navigation = useNavigation<any>();
+  const {refresh} = useThread();
 
   const {
     post: {title, content, files},
@@ -100,13 +102,14 @@ export const TakePost = () => {
     setTitle,
   } = useUploadPost();
 
-  const {execute} = usePromise(async () => {
-    const paths = await Promise.all(files.map(file => uploadFile(file.path)));
+  const {execute, isPending} = usePromise(async () => {
+    const paths = await Promise.all(files.map(uploadFile));
     await api.post('/post', {title, content, files: paths});
     navigation.navigate(Main.name);
+    await refresh(false);
   });
 
-  const disabled = title.length === 0 || content.length === 0;
+  const disabled = title.length === 0 || content.length === 0 || isPending;
 
   return (
     <SafeAreaView>
@@ -167,12 +170,16 @@ export const TakePost = () => {
   );
 };
 
-const uploadFile = async (localPath: string) => {
+const uploadFile = async (file: Post['files'][number]) => {
+  const extension = file.path.split('.').at(-1);
   const form = new FormData();
   form.append('file', {
-    uri: localPath,
-    name: 'test',
-    type: 'image/jpeg', // 동영상 분기 추가 필요
+    uri: file.path,
+    name: `${Date.now()}.${extension}`,
+    type: {
+      photo: `image/${extension}`,
+      video: `video/${extension}`,
+    }[file.type],
   });
   const {data} = await api.post<{path: string}>('/file/upload', form, {
     transformRequest: [formData => formData],
