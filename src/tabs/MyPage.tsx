@@ -1,7 +1,10 @@
+import {STATIC_URL} from '@env';
 import {useNavigation} from '@react-navigation/native';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {trigger as haptic} from 'react-native-haptic-feedback';
 
+import {Spacer} from '../components/Spacer';
+import {useBrowser} from '../hooks/useBrowser';
 import {useUser} from '../hooks/useUser';
 import {Splash} from '../screens/Splash';
 import {authStorage} from '../services/storage';
@@ -45,12 +48,22 @@ const styles = StyleSheet.create({
 export const MyPage = () => {
   const navigation = useNavigation<any>();
   const {resetUser, user} = useUser();
+  const {open} = useBrowser();
   return (
     <View style={styles.background}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>@{user?.email.split('@')[0]}</Text>
       </View>
       <ScrollView style={styles.container}>
+        <Text style={styles.label}>설정</Text>
+        <Pressable
+          style={styles.toggle}
+          onPress={() => {
+            open({source: {uri: `${STATIC_URL}/pages/licenses.html`}});
+          }}>
+          <Text>오픈 소스 라이브러리</Text>
+        </Pressable>
+        <Spacer h={40} />
         <Text style={styles.label}>계정</Text>
         <Pressable
           style={styles.toggle}
