@@ -31,6 +31,9 @@ $ npm run start
 - react-native-haptic-feedback
 - react-native-video
 - react-native-vision-camera
+- react-native-webview
+- react-native-asset
 - swr
 - zustand
 - typescript
+- qs
