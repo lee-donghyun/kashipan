@@ -15,8 +15,10 @@ import Video from 'react-native-video';
 import {MemoedGrid} from '../components/Grid';
 import {SafeAreaView} from '../components/SafeAreaView';
 import {Spacer} from '../components/Spacer';
+import {usePromise} from '../hooks/usePromise';
 import {Post, useUploadPost} from '../hooks/useUploadPost';
 import {Main} from '../screens/Main';
+import {api} from '../services/api';
 import {Colors} from '../services/constant';
 
 const styles = StyleSheet.create({
@@ -90,12 +92,20 @@ const renderFile = (file: Post['files'][number]) =>
 const getKeyFromFile = (file: Post['files'][number] | undefined) => file?.path;
 
 export const TakePost = () => {
+  const navigation = useNavigation<any>();
+
   const {
     post: {title, content, files},
     setContent,
     setTitle,
   } = useUploadPost();
-  const navigation = useNavigation<any>();
+
+  const {execute} = usePromise(async () => {
+    const paths = await Promise.all(files.map(file => uploadFile(file.path)));
+    await api.post('/post', {title, content, files: paths});
+    navigation.navigate(Main.name);
+  });
+
   return (
     <SafeAreaView>
       <View style={styles.background}>
@@ -109,7 +119,7 @@ export const TakePost = () => {
           <Pressable
             onPress={() => {
               haptic('impactMedium');
-              navigation.navigate(Main.name);
+              execute();
             }}
             style={({pressed}) => [
               styles.actionButton,
@@ -151,4 +161,17 @@ export const TakePost = () => {
       </View>
     </SafeAreaView>
   );
+};
+
+const uploadFile = async (localPath: string) => {
+  const form = new FormData();
+  form.append('file', {
+    uri: localPath,
+    name: 'test',
+    type: 'image/jpeg', // 동영상 분기 추가 필요
+  });
+  const {data} = await api.post<{path: string}>('/file/upload', form, {
+    transformRequest: [formData => formData],
+  });
+  return data.path;
 };
