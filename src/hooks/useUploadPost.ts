@@ -1,20 +1,20 @@
 import {create} from 'zustand';
 
-export type Post = {
+export type PostForm = {
   files: {type: 'video' | 'photo'; path: string}[];
   title: string;
   content: string;
 };
-const defaultPost: Post = {
+const defaultPost: PostForm = {
   content: '',
   files: [],
   title: '',
 };
 export const useUploadPost = create<{
-  post: Post;
-  addFile: (file: Post['files'][number]) => void;
-  setTitle: (title: Post['title']) => void;
-  setContent: (content: Post['content']) => void;
+  post: PostForm;
+  addFile: (file: PostForm['files'][number]) => void;
+  setTitle: (title: PostForm['title']) => void;
+  setContent: (content: PostForm['content']) => void;
   reset: () => void;
 }>(set => ({
   post: defaultPost,

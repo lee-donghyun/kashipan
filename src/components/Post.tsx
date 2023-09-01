@@ -2,10 +2,11 @@ import {IconFill, IconOutline} from '@ant-design/icons-react-native';
 import {useRef, useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {trigger as haptic} from 'react-native-haptic-feedback';
+import Video from 'react-native-video';
 
 import {Post} from '../data-types/post';
 import {usePromise} from '../hooks/usePromise';
-import {api} from '../services/api';
+import {api, mapFileType} from '../services/api';
 import {likedStorage} from '../services/storage';
 import {Image} from './Image';
 
@@ -79,9 +80,21 @@ export const PostItem = ({
         <Text style={styles.content}>{post.content}</Text>
       </View>
       <View style={styles.imageContainer}>
-        {post.files.map(file => (
-          <Image key={file} style={styles.image} uri={file} />
-        ))}
+        {post.files
+          .map(mapFileType)
+          .map(file =>
+            file.type === 'image' ? (
+              <Image key={file.name} style={styles.image} uri={file.name} />
+            ) : file.type === 'video' ? (
+              <Video
+                key={file.name}
+                repeat
+                resizeMode="cover"
+                source={{uri: file.name}}
+                style={styles.image}
+              />
+            ) : null,
+          )}
       </View>
       <View style={styles.bottomContainer}>
         <Text style={styles.author}>@{post.userId}</Text>
