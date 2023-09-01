@@ -17,7 +17,7 @@ import {SafeAreaView} from '../components/SafeAreaView';
 import {Spacer} from '../components/Spacer';
 import {usePromise} from '../hooks/usePromise';
 import {useThread} from '../hooks/useThread';
-import {Post, useUploadPost} from '../hooks/useUploadPost';
+import {PostForm, useUploadPost} from '../hooks/useUploadPost';
 import {Main} from '../screens/Main';
 import {api} from '../services/api';
 import {Colors} from '../services/constant';
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const renderFile = (file: Post['files'][number]) =>
+const renderFile = (file: PostForm['files'][number]) =>
   file.type === 'photo' ? (
     <Image key={file.path} source={{uri: file.path}} style={styles.image} />
   ) : file.type === 'video' ? (
@@ -90,7 +90,8 @@ const renderFile = (file: Post['files'][number]) =>
     />
   ) : null;
 
-const getKeyFromFile = (file: Post['files'][number] | undefined) => file?.path;
+const getKeyFromFile = (file: PostForm['files'][number] | undefined) =>
+  file?.path;
 
 export const TakePost = () => {
   const navigation = useNavigation<any>();
@@ -170,7 +171,7 @@ export const TakePost = () => {
   );
 };
 
-const uploadFile = async (file: Post['files'][number]) => {
+const uploadFile = async (file: PostForm['files'][number]) => {
   const extension = file.path.split('.').at(-1);
   const form = new FormData();
   form.append('file', {
